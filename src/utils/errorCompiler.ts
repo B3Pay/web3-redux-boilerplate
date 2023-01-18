@@ -1,4 +1,4 @@
-import errors from "../contracts/error.json"
+import errors from "assets/error.json"
 
 type ContractError = keyof typeof errors
 

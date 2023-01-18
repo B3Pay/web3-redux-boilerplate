@@ -19,10 +19,10 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
-"@b3pay/tronlink@^1.0.0-beta.3":
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@b3pay/tronlink/-/tronlink-1.0.0-beta.3.tgz#420c0dba8f64a99e2e6024f052a6ad308e69a446"
-  integrity sha512-ZWsOpvKGdld48xnbfrJzMPrHVqB8Y4532rjNjHwgsrm547cAjf1p1/pfoCoidZJqEVGgeKoSPUQJ5n9z5CGJXw==
+"@b3pay/tronlink@^1.0.0-beta.7":
+  version "1.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@b3pay/tronlink/-/tronlink-1.0.0-beta.7.tgz#a50f6435957b0ed7d8909ed7525aab45c12ee578"
+  integrity sha512-r3fWwwQJBejaoj7BrtyCGAtgnQlbo+GS5b8hXIOgfoSBV4IUb1s6L2onpqeNUI/NWGkuwUjZBLyHe0wd6PQC9g==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.18.6":
   version "7.18.6"

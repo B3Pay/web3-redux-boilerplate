@@ -26,7 +26,7 @@
     ]
   },
   "dependencies": {
-    "@b3pay/tronlink": "^1.0.0-beta.3",
+    "@b3pay/tronlink": "^1.0.0-beta.7",
     "@coinbase/wallet-sdk": "^3.6.3",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
