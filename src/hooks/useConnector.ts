@@ -1,0 +1,50 @@
+import { getIsActive } from "contexts/functions/getConnector"
+import {
+  useChainActiveConnectorName,
+  useSelectedChainName,
+} from "contexts/hooks"
+import {
+  useConnectorKeys,
+  useConnectorStates,
+} from "contexts/hooks/useConnectorCtx"
+import { connectorCache } from "contexts/models/connector"
+import { Web3ContextType } from "contexts/types/connector"
+import { ConnectorName, ConnectorType } from "utils/types"
+import { useProvider } from "./useProvider"
+
+export const getConnector = (key: ConnectorName) => {
+  return connectorCache[key] as ConnectorType
+}
+
+export const useConnectorByName = (
+  key: ConnectorName
+): Partial<Web3ContextType> => {
+  const connector = getConnector(key)
+
+  const states = useConnectorStates(key)
+
+  const provider = useProvider(key, !!states?.accounts?.length)
+
+  const signer = provider?.getSigner()
+
+  return { connector, signer, provider, ...states }
+}
+
+export function useActiveConnectorName() {
+  const connectors = useConnectorKeys()
+  const selectedChain = useSelectedChainName()
+  const connectorName = useChainActiveConnectorName(selectedChain)
+
+  if (connectorName) {
+    return connectorName
+  }
+
+  return connectors.find(getIsActive) as ConnectorName
+}
+
+const useConnector = () => {
+  const name = useActiveConnectorName()
+  return useConnectorByName(name)
+}
+
+export default useConnector
