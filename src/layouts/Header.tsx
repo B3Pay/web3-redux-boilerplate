@@ -6,7 +6,6 @@ import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import LinearProgress from "@mui/material/LinearProgress"
 import Toolbar from "@mui/material/Toolbar"
-import WalletModal from "components/WalletModal"
 import { initializeConnectors } from "contexts/functions/setConnector"
 import { setConnectModal } from "contexts/functions/setSetting"
 import {
@@ -15,6 +14,7 @@ import {
   useInitialized,
 } from "contexts/hooks"
 import useConnector from "hooks/useConnector"
+import WalletModal from "layouts/WalletModal"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { getEllipsis } from "utils"
@@ -23,9 +23,9 @@ import DrawerMenu from "./DrawerMenu"
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-
   useEffect(() => initializeConnectors(), [])
+
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const { open, tab } = useConnectModal()
 

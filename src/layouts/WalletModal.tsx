@@ -10,10 +10,10 @@ import Slide from "@mui/material/Slide"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import ChainButton from "components/ChainButton"
+import ConnectorCard from "components/ConnectorCard"
 import { setConnectModal } from "contexts/functions/setSetting"
 import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChainCtx"
-import ChainButton from "./ChainButton"
-import ConnectorCard from "./ConnectorCard"
 
 interface WalletModalProps {
   open: boolean
