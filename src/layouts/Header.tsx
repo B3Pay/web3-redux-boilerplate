@@ -69,11 +69,11 @@ const Header: React.FC<HeaderProps> = () => {
             )}
           </Box>
         </Box>
-        {globalLoading && <LinearProgress />}
       </Toolbar>
       {initialized && (
         <WalletModal open={open} onClose={setConnectModal} tab={tab} />
       )}
+      {globalLoading && <LinearProgress />}
       <DrawerMenu toggleDrawer={setDrawerOpen} drawerOpen={drawerOpen} />
     </AppBar>
   )
