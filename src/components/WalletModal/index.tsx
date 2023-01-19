@@ -11,9 +11,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { setConnectModal } from "contexts/functions/setSetting"
+import { useThemeColorRange } from "contexts/hooks"
 import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChainCtx"
 import ChainButton from "./ChainButton"
-import WalletCard from "./WalletCard"
+import ConnectorCard from "./ConnectorCard"
 
 interface WalletModalProps {
   open: boolean
@@ -26,6 +27,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
 
   const chainList = useChainList()
   const connectedChain = useChainOrderByIndex(0)
+  const bgColor = useThemeColorRange(50)
 
   return (
     <Modal
@@ -49,45 +51,42 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
         maxWidth={{ xs: "100%", sm: 440 }}
       >
         <Card>
-          <Stack justifyContent="space-between" alignItems="center">
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              width="100%"
-              px={2}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            px={2}
+          >
+            <Typography textTransform="uppercase" fontWeight="bolder">
+              Connect Wallet
+            </Typography>
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              aria-label="close"
+              onClick={() => onClose(false)}
             >
-              <Typography textTransform="uppercase" fontWeight="bolder">
-                Connect Wallet
-              </Typography>
-              <IconButton
-                size="large"
-                edge="end"
-                color="inherit"
-                aria-label="close"
-                onClick={() => onClose(false)}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Stack>
-            <Divider flexItem />
-            <Stack
-              width="100%"
-              direction="row"
-              justifyContent="space-between"
-              overflow="scroll"
-              bgcolor="grey.200"
-            >
-              {chainList.map(({ chainName }) => (
-                <ChainButton
-                  key={chainName}
-                  chainName={chainName}
-                  selected={chainName === tab}
-                  connected={connectedChain === chainName}
-                  setSelectChain={() => setConnectModal(true, chainName)}
-                />
-              ))}
-            </Stack>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+          <Divider flexItem />
+          <Stack
+            width="100%"
+            direction="row"
+            overflow="scroll"
+            justifyContent="space-between"
+            bgcolor="action.disabledBackground"
+          >
+            {chainList.map(({ chainName }) => (
+              <ChainButton
+                key={chainName}
+                chainName={chainName}
+                selected={chainName === tab}
+                connected={connectedChain === chainName}
+                setSelectChain={() => setConnectModal(true, chainName)}
+              />
+            ))}
           </Stack>
           <List>
             {chainList.map(
@@ -95,7 +94,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
                 chainName === tab &&
                 connectors.map((connector, index) => (
                   <Box key={connector}>
-                    <WalletCard name={connector} chainIds={chainIds} />
+                    <ConnectorCard name={connector} chainIds={chainIds} />
                     {index !== connectors.length - 1 && (
                       <Divider sx={{ my: 1 }} component="li" variant="middle" />
                     )}

@@ -1,9 +1,17 @@
 import { getFirstChainName } from "contexts/functions/getChain"
+import { Colors } from "contexts/models/setting"
 import store from "../store"
 import { SnackBarType, Translate } from "../types/setting"
 
 export const setModal = (modal: boolean) =>
   store.dispatch.setting.SET_MODAL(modal)
+
+export const setThemeColor = (color: Colors) =>
+  store.dispatch.setting.SET_THEME_COLOR(color)
+
+export const setThemeMode = (mode: "dark" | "light" | "system") => {
+  store.dispatch.setting.SET_THEME_MODE(mode)
+}
 
 export const setShowSnackbar = (snackbar: boolean) =>
   store.dispatch.setting.setShowSnackBar(snackbar)

@@ -1,4 +1,4 @@
-import { Badge, Box, Stack, Typography } from "@mui/material"
+import { Badge, Box, Paper, Stack, Typography } from "@mui/material"
 import { useActiveChainNames } from "hooks/useChains"
 import Image from "next/image"
 
@@ -18,23 +18,22 @@ const ChainButton: React.FC<ChainButtonProps> = ({
   const activeChain = useActiveChainNames()
 
   return (
-    <Stack
-      justifyContent="center"
-      alignItems="center"
-      overflow="hidden"
-      margin={0}
+    <Paper
       onClick={() => setSelectChain(chainName)}
-      width={100}
-      height={100}
-      boxShadow={selected ? 3 : 0}
-      borderRadius={selected ? 1 : 0}
+      elevation={selected ? 1 : 0}
       sx={{
         cursor: "pointer",
         position: "relative",
-        borderBottomRightRadius: 0,
+        width: 100,
+        height: 100,
+        display: "flex",
+        overflow: "hidden",
+        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center",
         borderBottomLeftRadius: 0,
-        bgcolor: selected ? "background.paper" : "grey.200",
-        color: selected ? "text.primary" : "text.secondary",
+        borderBottomRightRadius: 0,
+        bgcolor: selected ? "background.paper" : "transparent",
       }}
     >
       <Badge
@@ -50,13 +49,13 @@ const ChainButton: React.FC<ChainButtonProps> = ({
         }}
       >
         <Box
-          boxShadow={selected ? 3 : 1}
-          bgcolor="background.paper"
+          border={1}
+          borderRadius={1}
+          borderColor="action.selected"
           width={55}
           height={55}
           justifyContent="center"
           alignItems="center"
-          borderRadius={1}
           component={Stack}
         >
           <Image
@@ -83,7 +82,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
       >
         {chainName}
       </Typography>
-    </Stack>
+    </Paper>
   )
 }
 

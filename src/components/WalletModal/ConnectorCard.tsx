@@ -7,12 +7,12 @@ import { ConnectorName } from "utils/types"
 import Accounts from "./Accounts"
 import ConnectWithSelect from "./ConnectWithSelect"
 
-interface WalletCardProps {
+interface ConnectorCardProps {
   name: ConnectorName
   chainIds: number[]
 }
 
-const WalletCard: React.FC<WalletCardProps> = ({ name, chainIds }) => {
+const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
   const { accounts, activating, isActive, chainId, error } =
     useConnectorStatesWithChainIds(name, chainIds)
 
@@ -45,12 +45,13 @@ const WalletCard: React.FC<WalletCardProps> = ({ name, chainIds }) => {
         }
       >
         <Box
+          border={1}
+          borderRadius={1}
+          borderColor="action.selected"
           width={50}
           height={50}
-          boxShadow={1}
           justifyContent="center"
           alignItems="center"
-          borderRadius={1}
           component={Stack}
         >
           <Image
@@ -85,4 +86,4 @@ const WalletCard: React.FC<WalletCardProps> = ({ name, chainIds }) => {
   )
 }
 
-export default WalletCard
+export default ConnectorCard
