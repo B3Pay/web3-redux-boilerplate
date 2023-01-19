@@ -11,7 +11,6 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { setConnectModal } from "contexts/functions/setSetting"
-import { useThemeColorRange } from "contexts/hooks"
 import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChainCtx"
 import ChainButton from "./ChainButton"
 import ConnectorCard from "./ConnectorCard"
@@ -27,7 +26,6 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
 
   const chainList = useChainList()
   const connectedChain = useChainOrderByIndex(0)
-  const bgColor = useThemeColorRange(50)
 
   return (
     <Modal

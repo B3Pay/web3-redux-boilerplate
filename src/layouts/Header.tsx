@@ -1,11 +1,11 @@
 import MenuIcon from "@mui/icons-material/Menu"
+import { Skeleton } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import LinearProgress from "@mui/material/LinearProgress"
 import Toolbar from "@mui/material/Toolbar"
-import Typography from "@mui/material/Typography"
 import WalletModal from "components/WalletModal"
 import { initializeConnectors } from "contexts/functions/setConnector"
 import { setConnectModal } from "contexts/functions/setSetting"
@@ -15,17 +15,21 @@ import {
   useInitialized,
 } from "contexts/hooks"
 import useConnector from "hooks/useConnector"
-import { useEffect } from "react"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 import { getEllipsis } from "utils"
+import DrawerMenu from "./DrawerMenu"
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
   useEffect(() => initializeConnectors(), [])
 
   const { open, tab } = useConnectModal()
 
-  const web3Loading = useGlobalLoading()
+  const globalLoading = useGlobalLoading()
   const { signer, accounts } = useConnector()
 
   const initialized = useInitialized()
@@ -45,40 +49,32 @@ const Header: React.FC<HeaderProps> = () => {
               edge="start"
               color="inherit"
               aria-label="menu"
+              onClick={() => setDrawerOpen(true)}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6">B3PAY</Typography>
+            <Image src="/assets/logo.svg" height={56} width={56} alt="logo" />
           </Box>
           <Box justifyContent="flex-end" flex={4} display="flex">
-            {signer && accounts ? (
-              <Button
-                variant="text"
-                color="inherit"
-                onClick={() => setConnectModal(true)}
-              >
-                {getEllipsis(accounts[0])}
-              </Button>
-            ) : initialized ? (
+            {initialized ? (
               <Button
                 variant="outlined"
                 color="inherit"
                 onClick={() => setConnectModal(true)}
               >
-                CONNECT
+                {signer && accounts ? getEllipsis(accounts[0]) : "CONNECT"}
               </Button>
             ) : (
-              <Typography variant="button" color="inherit">
-                Initializing...
-              </Typography>
+              <Skeleton variant="rounded" width={115} height={36} />
             )}
           </Box>
         </Box>
+        {globalLoading && <LinearProgress />}
       </Toolbar>
       {initialized && (
         <WalletModal open={open} onClose={setConnectModal} tab={tab} />
       )}
-      {web3Loading && <LinearProgress />}
+      <DrawerMenu toggleDrawer={setDrawerOpen} drawerOpen={drawerOpen} />
     </AppBar>
   )
 }

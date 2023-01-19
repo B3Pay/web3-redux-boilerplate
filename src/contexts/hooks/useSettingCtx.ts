@@ -1,7 +1,6 @@
 import { colors } from "@mui/material"
-import { ColorRange, Colors } from "contexts/models/setting"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { RootState } from "contexts/store"
-import { useMemo } from "react"
 import { useSelector } from "react-redux"
 
 export default function useSetting() {
@@ -19,12 +18,15 @@ export function useThemeColor() {
 export function useThemeMode() {
   return useSelector((state: RootState) => state.setting.theme.mode)
 }
+export function useMediaThemeMode() {
+  const mode = useThemeMode()
+  const system = useMediaQuery("(prefers-color-scheme: dark)")
 
-export const useThemeColorRange = (range: ColorRange = 700): Colors => {
+  return mode === "system" ? (system ? "dark" : "light") : mode
+}
+
+export function useThemeColorPalette() {
   const color = useThemeColor()
 
-  return useMemo(
-    () => (color === "white" ? color : colors[color][range]),
-    [color, range]
-  )
+  return colors[color]
 }

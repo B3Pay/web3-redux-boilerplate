@@ -1,30 +1,11 @@
 import { createModel } from "@rematch/core"
 import { RootModel } from "../store"
-import { SnackBarType, Translate } from "../types/setting"
-
-import { colors } from "@mui/material"
-
-export type Colors = keyof typeof colors | "white"
-
-export type ColorRange = keyof typeof colors.amber
-
-export type ConnectModalType = {
-  open: boolean
-  tab?: string
-}
-
-export type DefaultSettingState = {
-  showSnackBar: boolean
-  showDetails: boolean
-  showAddress: boolean
-  modal: boolean
-  connectModal: ConnectModalType
-  snackbar: SnackBarType
-  theme: {
-    mode: "dark" | "light" | "system"
-    color: Colors
-  }
-}
+import {
+  ColorKeys,
+  ConnectModalType,
+  DefaultSettingState,
+  SnackBarType,
+} from "../types/setting"
 
 const defaultState: DefaultSettingState = {
   showSnackBar: false,
@@ -33,7 +14,7 @@ const defaultState: DefaultSettingState = {
   modal: false,
   theme: {
     mode: "system",
-    color: "amber",
+    color: "blue",
   },
   connectModal: {
     open: false,
@@ -61,18 +42,13 @@ const setting = createModel<RootModel>()({
       snackbar,
       showSnackBar: true,
     }),
-    SET_TRANSLATE: (state, translate: Translate) => ({
-      ...state,
-      loading: false,
-      translate,
-    }),
     SHOW_SNACKBAR: (state, showSnackBar: boolean) => {
       return {
         ...state,
         showSnackBar,
       }
     },
-    SET_THEME_COLOR: (state, color: Colors) => {
+    SET_THEME_COLOR: (state, color: ColorKeys) => {
       return {
         ...state,
         theme: {
@@ -124,9 +100,6 @@ const setting = createModel<RootModel>()({
     },
     async setSnackBar(snackbar: SnackBarType) {
       dispatch.settings.SET_SNACKBAR(snackbar)
-    },
-    async setTranslate(translate: Translate) {
-      dispatch.settings.SET_TRANSLATE(translate)
     },
     async setShowSnackBar(showSnackBar: boolean) {
       dispatch.settings.SHOW_SNACKBAR(showSnackBar)

@@ -1,19 +1,31 @@
-export interface Translate {
-  x: number
-  y: number
-  height: number
-  width: number
+import type { colors } from "@mui/material"
+
+export type ColorKeys = Exclude<keyof typeof colors, "common">
+
+export type ColorPalette = typeof colors[ColorKeys]
+
+export type ColorPaletteKeys = keyof ColorPalette
+
+export type ColorRanges = {
+  [key in ColorPaletteKeys]: string
 }
 
-export interface SettingsState {
-  translate: Translate
-  loading: boolean
-  showAddress: boolean
+export type ConnectModalType = {
+  open: boolean
+  tab?: string
+}
+
+export type DefaultSettingState = {
   showSnackBar: boolean
-  snackbar: SnackBarType
   showDetails: boolean
-  user: string
+  showAddress: boolean
   modal: boolean
+  connectModal: ConnectModalType
+  snackbar: SnackBarType
+  theme: {
+    mode: "dark" | "light" | "system"
+    color: ColorKeys
+  }
 }
 
 export type SnackBarType = {

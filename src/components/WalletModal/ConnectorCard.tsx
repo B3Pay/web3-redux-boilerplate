@@ -1,4 +1,4 @@
-import { Badge, Box, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { Stack } from "@mui/system"
 import { useConnectorStatesWithChainIds } from "contexts/hooks/useConnectorCtx"
 import Image from "next/image"
@@ -18,50 +18,41 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
 
   return (
     <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
       px={2}
       py={1}
       spacing={1}
       height={70}
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
     >
-      <Badge
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        variant="dot"
-        color={
+      <Box
+        border={1}
+        width={110}
+        height={50}
+        borderRadius={1}
+        borderColor={
           error
-            ? "error"
+            ? "error.main"
             : isActive
-            ? "success"
+            ? "success.main"
             : activating
-            ? "warning"
+            ? "warning.main"
             : chainId
-            ? "secondary"
-            : "default"
+            ? "secondary.main"
+            : "text.disabled"
         }
+        justifyContent="center"
+        alignItems="center"
+        component={Stack}
       >
-        <Box
-          border={1}
-          borderRadius={1}
-          borderColor="action.selected"
-          width={50}
-          height={50}
-          justifyContent="center"
-          alignItems="center"
-          component={Stack}
-        >
-          <Image
-            alt={name}
-            src={`assets/wallet/${name}.svg`}
-            width={45}
-            height={45}
-          />
-        </Box>
-      </Badge>
+        <Image
+          alt={name}
+          src={`assets/wallet/${name}.svg`}
+          width={35}
+          height={35}
+        />
+      </Box>
       <Stack width="100%" height={45}>
         <Typography
           textTransform="uppercase"

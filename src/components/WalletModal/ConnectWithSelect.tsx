@@ -94,7 +94,7 @@ const ConnectWithSelect: React.FC<ConnectWithSelectProps> = ({
           sx={{
             padding: 0,
             "& .MuiSelect-select": {
-              padding: 0.2,
+              padding: 0.7,
               paddingLeft: 1,
               fontSize: 12,
             },
@@ -112,7 +112,7 @@ const ConnectWithSelect: React.FC<ConnectWithSelectProps> = ({
         size="small"
         variant="outlined"
         sx={{
-          padding: 0,
+          padding: 0.5,
           fontSize: 12,
         }}
         {...buttonProps}

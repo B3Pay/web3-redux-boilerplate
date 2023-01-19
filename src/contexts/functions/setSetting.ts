@@ -1,12 +1,12 @@
 import { getFirstChainName } from "contexts/functions/getChain"
-import { Colors } from "contexts/models/setting"
+import { ColorKeys } from "contexts/types/setting"
 import store from "../store"
-import { SnackBarType, Translate } from "../types/setting"
+import { SnackBarType } from "../types/setting"
 
 export const setModal = (modal: boolean) =>
   store.dispatch.setting.SET_MODAL(modal)
 
-export const setThemeColor = (color: Colors) =>
+export const setThemeColor = (color: ColorKeys) =>
   store.dispatch.setting.SET_THEME_COLOR(color)
 
 export const setThemeMode = (mode: "dark" | "light" | "system") => {
@@ -22,9 +22,6 @@ export const setShowDetails = () => store.dispatch.setting.setShowDetails()
 
 export const setSnackbar = (props: SnackBarType) =>
   store.dispatch.setting.setSnackBar(props)
-
-export const setTranslate = (translate: Translate) =>
-  store.dispatch.setting.setTranslate(translate)
 
 export function setConnectModal(open: boolean, selectedTab?: string) {
   const tab = selectedTab ?? getFirstChainName()

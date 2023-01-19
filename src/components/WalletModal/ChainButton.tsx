@@ -51,7 +51,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
         <Box
           border={1}
           borderRadius={1}
-          borderColor="action.selected"
+          borderColor={selected ? "primary.main" : "action.selected"}
           width={55}
           height={55}
           justifyContent="center"
