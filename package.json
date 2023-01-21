@@ -1,11 +1,11 @@
 {
   "name": "react-web3-redux",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build"
+    "build": "yarn version && next build"
   },
   "eslintConfig": {
     "extends": [
