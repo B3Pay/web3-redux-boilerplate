@@ -1,4 +1,8 @@
-import { Badge, Box, Paper, Stack, Typography } from "@mui/material"
+import Badge from "@mui/material/Badge"
+import Box from "@mui/material/Box"
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 import { useActiveChainNames } from "hooks/useChains"
 import Image from "next/image"
 
@@ -59,7 +63,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
           component={Stack}
         >
           <Image
-            src={`./assets/chain/${chainName}.svg`}
+            src={`/assets/images/chain/${chainName}.svg`}
             alt={chainName}
             width={40}
             height={40}

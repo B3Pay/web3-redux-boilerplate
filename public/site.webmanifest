@@ -1,5 +1,6 @@
 {
   "name": "B3PAY",
+  "description": "B3PAY is a payment gateway that allows you to accept payments from your customers using Bitcoin, Ethereum, Litecoin, Bitcoin Cash, Dash, Dogecoin, and more.",
   "short_name": "B3PAY",
   "icons": [
     {
@@ -8,12 +9,12 @@
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-256x256.png",
-      "sizes": "256x256",
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#000000"
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone"
 }

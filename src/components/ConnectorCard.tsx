@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
 import { Stack } from "@mui/system"
-import { useConnectorStatesWithChainIds } from "contexts/hooks/useConnectorCtx"
+import { useConnectorStatesWithChainIds } from "contexts/hooks/useConnector"
 import Image from "next/image"
 import React from "react"
 import { ConnectorName } from "utils/types"
@@ -48,7 +49,7 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
       >
         <Image
           alt={name}
-          src={`assets/wallet/${name}.svg`}
+          src={`/assets/images/wallet/${name}.svg`}
           width={35}
           height={35}
         />

@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import Typography from "@mui/material/Typography"
 import useBalances from "hooks/useBalances"
 import { formatBalance, getEllipsis } from "utils"
 import { ConnectorName } from "utils/types"

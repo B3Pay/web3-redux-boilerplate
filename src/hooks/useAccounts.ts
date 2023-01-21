@@ -1,4 +1,4 @@
-import { usePriorityConnector } from "contexts/hooks"
+import { usePriorityConnector } from "contexts/hooks/useConnector"
 
 export function useAccounts(): string[] | undefined {
   const web3 = usePriorityConnector()

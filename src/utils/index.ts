@@ -1,4 +1,4 @@
-import { CHAIN_LIST } from "connectors"
+import { getChainNameByChainId, getDefaultConnectors } from "contexts/functions"
 import { BigNumber } from "ethers"
 import { formatEther, formatUnits } from "ethers/lib/utils"
 import { CHAINS } from "./chains"
@@ -13,15 +13,11 @@ export const wait = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
 export function findChainName(connectorName: ConnectorName, chainId: number) {
-  let chainName: string | undefined
-
-  if (CHAIN_LIST.default.connectors.includes(connectorName)) {
+  if (getDefaultConnectors().includes(connectorName)) {
     return "default"
   }
 
-  chainName = Object.keys(CHAIN_LIST).find((key) =>
-    CHAIN_LIST[key].chainIds.includes(chainId)
-  )
+  const chainName = getChainNameByChainId(chainId)
 
   if (chainName === undefined) throw new Error("Chain not found")
 

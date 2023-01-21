@@ -1,30 +1,25 @@
 import MenuIcon from "@mui/icons-material/Menu"
-import { Skeleton } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import LinearProgress from "@mui/material/LinearProgress"
+import Skeleton from "@mui/material/Skeleton"
 import Toolbar from "@mui/material/Toolbar"
-import { initializeConnectors } from "contexts/functions/setConnector"
 import { setConnectModal } from "contexts/functions/setSetting"
-import {
-  useConnectModal,
-  useGlobalLoading,
-  useInitialized,
-} from "contexts/hooks"
+import { useInitialized } from "contexts/hooks/useChain"
+import { useGlobalLoading } from "contexts/hooks/useLoading"
+import { useConnectModal } from "contexts/hooks/useSetting"
 import useConnector from "hooks/useConnector"
 import WalletModal from "layouts/WalletModal"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { getEllipsis } from "utils"
 import DrawerMenu from "./DrawerMenu"
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  useEffect(() => initializeConnectors(), [])
-
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const { open, tab } = useConnectModal()
@@ -53,7 +48,12 @@ const Header: React.FC<HeaderProps> = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Image src="/assets/logo.svg" height={56} width={56} alt="logo" />
+            <Image
+              src="/assets/images/logo.svg"
+              height={56}
+              width={56}
+              alt="logo"
+            />
           </Box>
           <Box justifyContent="flex-end" flex={4} display="flex">
             {initialized ? (

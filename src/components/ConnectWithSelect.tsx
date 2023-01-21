@@ -1,11 +1,14 @@
-import { Button, MenuItem, Select, Stack, StackProps } from "@mui/material"
+import Button from "@mui/material/Button"
+import MenuItem from "@mui/material/MenuItem"
+import Select from "@mui/material/Select"
+import Stack, { StackProps } from "@mui/material/Stack"
 import {
   connectorActivate,
   connectorAddChain,
   connectorDisconnect,
   connectorSwitchChain,
 } from "contexts/functions/setConnector"
-import { useConnectorStates } from "contexts/hooks/useConnectorCtx"
+import { useConnectorStates } from "contexts/hooks/useConnector"
 import { useMemo, useState } from "react"
 import { CHAINS } from "utils/chains"
 import { ConnectorName } from "utils/types"

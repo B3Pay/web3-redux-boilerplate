@@ -2,7 +2,7 @@ import { getIsActiveWithChainIds } from "contexts/functions/getConnector"
 import { RootState } from "contexts/store"
 import { useSelector } from "react-redux"
 
-export default function useChainCtx() {
+export default function useChain() {
   return useSelector((state: RootState) => state.chain)
 }
 

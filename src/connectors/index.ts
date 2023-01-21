@@ -7,7 +7,7 @@ import { MetaMask } from "@web3-react/metamask"
 import { Network } from "@web3-react/network"
 import { Url } from "@web3-react/url"
 import { WalletConnect } from "@web3-react/walletconnect"
-import { ChainList } from "contexts/models/chain"
+
 // key should be the same as the file name
 export type Web3Connectors = {
   url: Url
@@ -19,32 +19,4 @@ export type Web3Connectors = {
   gnosisSafe: GnosisSafe
   coinbase: CoinbaseWallet
   walletconnect: WalletConnect
-}
-
-export const CHAIN_LIST: ChainList = {
-  ethereum: {
-    chainName: "ethereum",
-    connectors: ["injected", "walletconnect", "coinbase"],
-    chainIds: [1, 42161, 80001, 31337],
-  },
-  binance: {
-    chainName: "binance",
-    connectors: ["injected", "walletconnect", "coinbase"],
-    chainIds: [56, 97],
-  },
-  avalanche: {
-    chainName: "avalanche",
-    connectors: ["injected", "walletconnect", "coinbase"],
-    chainIds: [43114],
-  },
-  tron: {
-    chainName: "tron",
-    connectors: ["tronlink"],
-    chainIds: [1000000000],
-  },
-  default: {
-    chainName: "default",
-    connectors: ["network"],
-    chainIds: [1, 42, 56, 97, 100, 80001, 31337, 43114, 42220],
-  },
 }

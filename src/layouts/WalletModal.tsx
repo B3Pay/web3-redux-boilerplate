@@ -1,10 +1,10 @@
 import CloseIcon from "@mui/icons-material/Close"
-import { List } from "@mui/material"
 import Box from "@mui/material/Box"
 import Card from "@mui/material/Card"
 import Divider from "@mui/material/Divider"
 import Fade from "@mui/material/Fade"
 import IconButton from "@mui/material/IconButton"
+import List from "@mui/material/List"
 import Modal from "@mui/material/Modal"
 import Slide from "@mui/material/Slide"
 import Stack from "@mui/material/Stack"
@@ -13,7 +13,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import ChainButton from "components/ChainButton"
 import ConnectorCard from "components/ConnectorCard"
 import { setConnectModal } from "contexts/functions/setSetting"
-import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChainCtx"
+import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChain"
 
 interface WalletModalProps {
   open: boolean

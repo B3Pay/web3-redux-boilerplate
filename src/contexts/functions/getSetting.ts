@@ -1,4 +1,5 @@
-import { colors } from "@mui/material"
+import * as colors from "@mui/material/colors/"
+import store from "contexts/store"
 import { ColorKeys, ColorPaletteKeys } from "contexts/types/setting"
 
 export const ALLCOLORS = Object.entries(colors).filter(
@@ -10,4 +11,8 @@ export function getAllThemeColorsByRange(range: ColorPaletteKeys = 700) {
     const color = value[range]
     return [...acc, { name, color }]
   }, [] as { name: ColorKeys; color: string }[])
+}
+
+export function getAppVersion() {
+  return store.getState().setting.version
 }

@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import { setChainNameFirst } from "contexts/functions/setChain"
-import { useChainNames, useSelectedChainName } from "contexts/hooks"
+import { useChainNames, useSelectedChainName } from "contexts/hooks/useChain"
 import useConnector from "hooks/useConnector"
 import { useState } from "react"
 

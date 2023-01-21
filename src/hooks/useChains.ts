@@ -1,9 +1,9 @@
 import { getIsActive } from "contexts/functions/getConnector"
-import { useChainList } from "contexts/hooks"
+import { useChainList } from "contexts/hooks/useChain"
 import {
   useAllConnectorStates,
   useConnectorStates,
-} from "contexts/hooks/useConnectorCtx"
+} from "contexts/hooks/useConnector"
 import { useMemo } from "react"
 import { ConnectorName } from "utils/types"
 import { useActiveConnectorName } from "./useConnector"

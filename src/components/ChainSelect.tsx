@@ -1,4 +1,7 @@
-import { Button, ButtonProps, MenuItem, Stack, TextField } from "@mui/material"
+import Button, { ButtonProps } from "@mui/material/Button"
+import MenuItem from "@mui/material/MenuItem"
+import Stack from "@mui/material/Stack"
+import TextField from "@mui/material/TextField"
 import { CHAINS } from "utils/chains"
 import { ConnectorName } from "utils/types"
 interface ChainSelectProps extends ButtonProps {

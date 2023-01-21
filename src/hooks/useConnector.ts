@@ -2,11 +2,11 @@ import { getIsActive } from "contexts/functions/getConnector"
 import {
   useChainActiveConnectorName,
   useSelectedChainName,
-} from "contexts/hooks"
+} from "contexts/hooks/useChain"
 import {
   useConnectorKeys,
   useConnectorStates,
-} from "contexts/hooks/useConnectorCtx"
+} from "contexts/hooks/useConnector"
 import { connectorCache } from "contexts/models/connector"
 import { Web3ContextType } from "contexts/types/connector"
 import { ConnectorName, ConnectorType } from "utils/types"

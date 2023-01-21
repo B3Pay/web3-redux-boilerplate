@@ -1,7 +1,7 @@
 import type { BaseProvider, Web3Provider } from "@ethersproject/providers"
 import { useEffect, useMemo, useState } from "react"
 import { ConnectorName } from "utils/types"
-import { useConnectorStates } from "../contexts/hooks/useConnectorCtx"
+import { useConnectorStates } from "../contexts/hooks/useConnector"
 import { getConnector, useActiveConnectorName } from "./useConnector"
 
 let DynamicProvider: typeof Web3Provider | null | undefined

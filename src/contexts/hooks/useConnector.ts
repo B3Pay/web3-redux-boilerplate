@@ -7,7 +7,7 @@ import { useSelector } from "react-redux"
 import { ConnectorName } from "utils/types"
 import { RootState } from "../store"
 
-export default function useConnectorCtx() {
+export default function useConnector() {
   return useSelector((state: RootState) => state.connector)
 }
 

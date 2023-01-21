@@ -1,6 +1,18 @@
 import store from "contexts/store"
 import { getAllActiveChainNames } from "./getConnector"
 
+export function getDefaultConnectors() {
+  return store.getState().chain.list.default.connectors
+}
+
+export function getChainNameByChainId(chainId: number) {
+  const chainList = getChainList()
+
+  return Object.keys(chainList).find((key) =>
+    chainList[key].chainIds.includes(chainId)
+  )
+}
+
 export function getChainsInfo() {
   return store.getState().chain
 }

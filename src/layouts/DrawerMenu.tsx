@@ -1,24 +1,25 @@
-import { RestartAlt } from "@mui/icons-material"
 import LensIcon from "@mui/icons-material/Lens"
-import {
-  capitalize,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material"
+import RestartAlt from "@mui/icons-material/RestartAlt"
 import Box from "@mui/material/Box"
 import Divider from "@mui/material/Divider"
 import Drawer from "@mui/material/Drawer"
+import FormControl from "@mui/material/FormControl"
+import IconButton from "@mui/material/IconButton"
+import InputLabel from "@mui/material/InputLabel"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import MenuItem from "@mui/material/MenuItem"
+import Select from "@mui/material/Select"
+import { capitalize } from "@mui/material/utils"
 import { setThemeColor, setThemeMode } from "contexts/functions"
-import { getAllThemeColorsByRange } from "contexts/functions/getSetting"
-import { useThemeMode } from "contexts/hooks"
+import {
+  getAllThemeColorsByRange,
+  getAppVersion,
+} from "contexts/functions/getSetting"
+import { useThemeMode } from "contexts/hooks/useSetting"
 import { ColorKeys } from "contexts/types/setting"
 import Image from "next/image"
 
@@ -47,18 +48,28 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
         justifyContent="space-between"
         flexDirection="column"
         role="presentation"
-        onClick={() => toggleDrawer(false)}
       >
         <List>
           <ListItem>
             <ListItemIcon>
-              <Image src="/assets/logo.svg" height={50} width={50} alt="logo" />
+              <Image
+                src="/assets/images/logo-long.svg"
+                height={50}
+                width={100}
+                alt="logo"
+              />
             </ListItemIcon>
-            <ListItemText primary="B3PAY" />
+            <ListItemText
+              secondary={getAppVersion()}
+              sx={{
+                textAlign: "end",
+              }}
+              inset
+            />
           </ListItem>
           <Divider />
         </List>
-        <List>
+        <List onClick={() => toggleDrawer(false)}>
           <ListItem>
             <FormControl fullWidth>
               <InputLabel id="simple-select-label">Theme</InputLabel>
@@ -67,11 +78,9 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
                 id="simple-select"
                 value={mode}
                 label="Theme"
-                onChange={(e) => {
-                  const value = e.target.value as typeof options[number]
-                  setThemeMode(value)
-                  localStorage.setItem("theme", value)
-                }}
+                onChange={(e) =>
+                  setThemeMode(e.target.value as typeof options[number])
+                }
               >
                 {options.map((option) => (
                   <MenuItem key={option} value={option}>

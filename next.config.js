@@ -1,3 +1,4 @@
+const packageJson = require("./package.json")
 const withPWA = require("next-pwa")({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
@@ -5,5 +6,8 @@ const withPWA = require("next-pwa")({
 
 /** @type {import('next').NextConfig} */
 module.exports = withPWA({
+  env: {
+    APP_VERSION: packageJson.version,
+  },
   reactStrictMode: false,
 })

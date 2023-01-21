@@ -1,4 +1,4 @@
-import type { colors } from "@mui/material"
+import * as colors from "@mui/material/colors/"
 
 export type ColorKeys = Exclude<keyof typeof colors, "common">
 
@@ -26,6 +26,7 @@ export type DefaultSettingState = {
     mode: "dark" | "light" | "system"
     color: ColorKeys
   }
+  version: string
 }
 
 export type SnackBarType = {

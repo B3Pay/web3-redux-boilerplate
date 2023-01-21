@@ -23,6 +23,7 @@ const defaultState: DefaultSettingState = {
   snackbar: {
     message: "",
   },
+  version: process.env.APP_VERSION || "",
 }
 
 const setting = createModel<RootModel>()({
@@ -49,6 +50,7 @@ const setting = createModel<RootModel>()({
       }
     },
     SET_THEME_COLOR: (state, color: ColorKeys) => {
+      localStorage.setItem("themeColor", color)
       return {
         ...state,
         theme: {
@@ -58,6 +60,7 @@ const setting = createModel<RootModel>()({
       }
     },
     SET_THEME_MODE: (state, mode: "dark" | "light" | "system") => {
+      localStorage.setItem("themeMode", mode)
       return {
         ...state,
         theme: {
@@ -66,13 +69,19 @@ const setting = createModel<RootModel>()({
         },
       }
     },
-    SHOW_ADDRESS: (state) => {
+    SET_APP_VERSION: (state, version: string) => {
+      return {
+        ...state,
+        version,
+      }
+    },
+    SET_SHOW_ADDRESS: (state) => {
       return {
         ...state,
         showAddress: !state.showAddress,
       }
     },
-    SHOW_DETAILS: (state) => {
+    SET_SHOW_DETAILS: (state) => {
       return {
         ...state,
         showDetails: !state.showDetails,
@@ -81,20 +90,6 @@ const setting = createModel<RootModel>()({
   },
 
   effects: (dispatch) => ({
-    async setThemeMode() {
-      const savedMode = localStorage.getItem("themeMode")
-      const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)")
-
-      if (savedMode) {
-        dispatch.settings.SET_THEME_MODE(
-          savedMode as "dark" | "light" | "system"
-        )
-      } else if (prefersDarkMode.matches) {
-        dispatch.settings.SET_THEME_MODE("dark")
-      } else {
-        dispatch.settings.SET_THEME_MODE("light")
-      }
-    },
     async setModal(modal: boolean) {
       dispatch.settings.SET_MODAL(modal)
     },
