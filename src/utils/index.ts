@@ -29,15 +29,13 @@ export function getChainName(chainId?: number) {
   return CHAINS[chainId]?.name || chainId
 }
 
-export function formatBalance(connectorName: string, value?: BigNumber) {
-  if (!value) return `0.00`
-  if (connectorName === "tronlink") return `₮${formatUnits(value, 6)}`
+export function formatBalance(value?: BigNumber | number) {
+  if (!value) return "0.00"
+  if (typeof value === "number") return formatUnits(value, 6)
   // fixed to 4 decimal places
-  return `Ξ${
-    value.isZero()
-      ? "0.00"
-      : value.lt(1000000)
-      ? "LOW"
-      : formatEther(value).slice(0, 7)
-  }`
+  return value.isZero()
+    ? "0.00"
+    : value.lt(1000000)
+    ? "LOW"
+    : formatEther(value).slice(0, 7)
 }

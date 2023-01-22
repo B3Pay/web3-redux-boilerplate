@@ -3,6 +3,7 @@ import { useChainList } from "contexts/hooks/useChain"
 import {
   useAllConnectorStates,
   useConnectorStates,
+  useConnectorStatesWithChainIds,
 } from "contexts/hooks/useConnector"
 import { useMemo } from "react"
 import { ConnectorName } from "utils/types"
@@ -30,6 +31,12 @@ export function useActiveChainNames() {
   )
 }
 
+export function useIsActiveChainName(chainName: string) {
+  const chainNames = useActiveChainNames()
+
+  return chainNames.includes(chainName)
+}
+
 export function useActiveChainName() {
   const chainId = usePriorityChain()
   const chainInfo = useChainList()
@@ -39,20 +46,15 @@ export function useActiveChainName() {
   return chainInfo.find((info) => info.chainIds.includes(chainId))?.chainName
 }
 
-// export function useActiveChainNamess() {
-//   const avticeChains = useAllActiveChains()
-//   const chainInfo = useChainsInfoWithoutDefault()
+export function useCurrentChainId(key: ConnectorName) {
+  const chainId = useChains(key)
 
-//   return useMemo(
-//     () =>
-//       chainInfo
-//         .filter((info) =>
-//           avticeChains.some((chain) => info.chainIds.includes(chain))
-//         )
-//         .map((info) => info.chainName),
-//     [avticeChains, chainInfo]
-//   )
-// }
+  if (!chainId) return null
+
+  const states = useConnectorStatesWithChainIds(key, [chainId])
+
+  return states?.chainId
+}
 
 export default function useChains(key: ConnectorName) {
   const states = useConnectorStates(key)

@@ -2,7 +2,11 @@ import type { BaseProvider, Web3Provider } from "@ethersproject/providers"
 import { useEffect, useMemo, useState } from "react"
 import { ConnectorName } from "utils/types"
 import { useConnectorStates } from "../contexts/hooks/useConnector"
-import { getConnector, useActiveConnectorName } from "./useConnector"
+import {
+  getConnector,
+  useActiveConnectorName,
+  useActiveConnectorNameByChainName,
+} from "./useConnector"
 
 let DynamicProvider: typeof Web3Provider | null | undefined
 
@@ -22,6 +26,12 @@ export type ProviderType = ReturnType<typeof useProvider>
 
 export const usePriorityProvider = (): ProviderType => {
   const key = useActiveConnectorName()
+  return useProvider(key)
+}
+
+export const useProviderByChainName = (chainName: string): ProviderType => {
+  const key = useActiveConnectorNameByChainName(chainName)
+
   return useProvider(key)
 }
 

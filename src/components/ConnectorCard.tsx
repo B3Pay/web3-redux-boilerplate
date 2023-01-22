@@ -14,7 +14,7 @@ interface ConnectorCardProps {
 }
 
 const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
-  const { accounts, activating, isActive, chainId, error } =
+  const { accounts, activating, isActive, chainId, error, chainName } =
     useConnectorStatesWithChainIds(name, chainIds)
 
   return (
@@ -22,16 +22,19 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
       px={2}
       py={1}
       spacing={1}
-      height={70}
+      height={60}
       direction="row"
       alignItems="center"
       justifyContent="space-between"
     >
       <Box
         border={1}
-        width={110}
-        height={50}
+        height={55}
+        minWidth={55}
         borderRadius={1}
+        justifyContent="center"
+        alignItems="center"
+        display="flex"
         borderColor={
           error
             ? "error.main"
@@ -43,9 +46,6 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
             ? "secondary.main"
             : "text.disabled"
         }
-        justifyContent="center"
-        alignItems="center"
-        component={Stack}
       >
         <Image
           alt={name}
@@ -54,7 +54,7 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
           height={35}
         />
       </Box>
-      <Stack width="100%" height={45}>
+      <Stack width="100%" height={45} justifyContent="center">
         <Typography
           textTransform="uppercase"
           variant="caption"
@@ -62,7 +62,22 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
         >
           {name}
         </Typography>
-        <Accounts accounts={accounts} connectorName={name} error={error} />
+        {error ? (
+          <Typography
+            component="span"
+            variant="caption"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            color="text.secondary"
+            textOverflow="ellipsis"
+          >
+            {error.name ?? "Error"}
+            {error.message ? `: ${error.message}` : null}
+          </Typography>
+        ) : (
+          accounts &&
+          chainName && <Accounts accounts={accounts} chainName={chainName} />
+        )}
       </Stack>
       <ConnectWithSelect
         width={300}

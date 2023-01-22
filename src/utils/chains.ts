@@ -19,7 +19,8 @@ const ETH: AddEthereumChainParameter["nativeCurrency"] = {
 const TRX: AddEthereumChainParameter["nativeCurrency"] = {
   name: "Tron",
   symbol: "TRX",
-  decimals: 18,
+  // @ts-ignore
+  decimals: 6,
 }
 
 const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
@@ -56,24 +57,17 @@ interface ExtendedChainInformation extends BasicChainInformation {
   blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"]
 }
 
-function isExtendedChainInformation(
-  chainInformation: BasicChainInformation | ExtendedChainInformation
-): chainInformation is ExtendedChainInformation {
-  return !!(chainInformation as ExtendedChainInformation).nativeCurrency
-}
-
 export function getAddChainParameters(
   chainId: number
 ): AddEthereumChainParameter | undefined {
   const chainInformation = CHAINS[chainId]
-  if (isExtendedChainInformation(chainInformation)) {
-    return {
-      chainId,
-      chainName: chainInformation.name,
-      nativeCurrency: chainInformation.nativeCurrency,
-      rpcUrls: chainInformation.urls,
-      blockExplorerUrls: chainInformation.blockExplorerUrls,
-    }
+
+  return {
+    chainId,
+    chainName: chainInformation.name,
+    nativeCurrency: chainInformation.nativeCurrency,
+    rpcUrls: chainInformation.urls,
+    blockExplorerUrls: chainInformation.blockExplorerUrls,
   }
 }
 
@@ -82,7 +76,7 @@ const quickNodeKey = process.env.NEXT_PUBLIC_QUICKNODE_KEY
 const quickNodeTestKey = process.env.NEXT_PUBLIC_QUICKNODE_TEST_KEY
 
 export const CHAINS: {
-  [chainId: number]: BasicChainInformation | ExtendedChainInformation
+  [chainId: number]: ExtendedChainInformation
 } = {
   1: {
     urls: [

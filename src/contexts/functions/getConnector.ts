@@ -1,6 +1,7 @@
 import { Web3ReactState } from "@web3-react/types"
 import store from "contexts/store"
 import { findChainName } from "utils"
+import { CHAINS } from "utils/chains"
 import { ConnectorName } from "utils/types"
 
 export function getConnectors() {
@@ -29,6 +30,30 @@ export function getIsActive(key: ConnectorName) {
     accounts,
     activating,
   })
+}
+
+export function getConnectorKeyByChainName(chainName: string) {
+  const connectors = getConnectors()
+
+  return getConnectorKey().find(
+    (key) => connectors[key]?.chainName === chainName
+  )
+}
+
+export function getChainIdByChainName(chainName: string) {
+  const connector = getConnectorKeyByChainName(chainName)
+
+  if (!connector) return undefined
+
+  return getConnector(connector).chainId
+}
+
+export function getNativeCurrencyByChainName(chainName: string) {
+  const chainId = getChainIdByChainName(chainName)
+
+  if (!chainId) return undefined
+
+  return CHAINS[chainId].nativeCurrency
 }
 
 export function getAllActiveChainNames() {

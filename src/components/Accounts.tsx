@@ -1,41 +1,35 @@
+import { Box } from "@mui/material"
 import Typography from "@mui/material/Typography"
+import { getNativeCurrencyByChainName } from "contexts/functions"
 import useBalances from "hooks/useBalances"
 import { formatBalance, getEllipsis } from "utils"
-import { ConnectorName } from "utils/types"
 
 interface AccountsProps {
-  connectorName: ConnectorName
+  chainName: string
   accounts?: string[]
-  error?: Error
 }
 
-const Accounts: React.FC<AccountsProps> = ({
-  connectorName,
-  accounts,
-  error,
-}) => {
-  const balances = useBalances(connectorName, accounts)
+const Accounts: React.FC<AccountsProps> = ({ chainName, accounts }) => {
+  const balances = useBalances(chainName, accounts)
 
-  if (accounts === undefined) return null
+  const tokenDetail = getNativeCurrencyByChainName(chainName)
 
   return (
-    <Typography variant="caption" color="text.secondary" overflow="auto">
-      {error ? (
-        <span>
-          {error.name ?? "Error"}
-          {error.message ? `: ${error.message}` : null}
-        </span>
-      ) : accounts.length === 0 ? (
-        "None"
-      ) : (
-        accounts?.map((account, i) => (
-          <span key={account}>
-            {getEllipsis(account, 2, 4)}(
-            {formatBalance(connectorName, balances?.[i])})
-          </span>
-        ))
-      )}
-    </Typography>
+    <Box>
+      {accounts?.map((account, i) => (
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          overflow="auto"
+          key={account}
+        >
+          {getEllipsis(account, 2, 4)}
+          <small>
+            ({formatBalance(balances?.[i])} {tokenDetail?.symbol})
+          </small>
+        </Typography>
+      ))}
+    </Box>
   )
 }
 

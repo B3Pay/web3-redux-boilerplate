@@ -17,7 +17,7 @@ import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChain"
 
 interface WalletModalProps {
   open: boolean
-  tab?: string
+  tab: string | undefined
   onClose: (open: boolean) => void
 }
 
@@ -25,7 +25,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
   const matches = useMediaQuery("(min-width:600px)")
 
   const chainList = useChainList()
-  const connectedChain = useChainOrderByIndex(0)
+  const connectedChain = useChainOrderByIndex()
 
   return (
     <Modal
@@ -74,7 +74,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
             direction="row"
             overflow="scroll"
             justifyContent="space-between"
-            bgcolor="action.disabledBackground"
+            bgcolor="background.default"
           >
             {chainList.map(({ chainName }) => (
               <ChainButton

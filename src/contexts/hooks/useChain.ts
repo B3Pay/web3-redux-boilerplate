@@ -30,7 +30,7 @@ export function useChainOrder(withDefault?: boolean) {
   return withDefault ? order : order.filter((item) => item !== "default")
 }
 
-export function useChainOrderByIndex(index: number) {
+export function useChainOrderByIndex(index = 0) {
   return useChainOrder()[index]
 }
 

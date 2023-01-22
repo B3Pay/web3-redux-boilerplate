@@ -1,3 +1,4 @@
+import ConnectorLoading from "components/ConnectorLoading"
 import { ConnectorLoader, LocalStorageLoader } from "contexts/loaders"
 import { ChainList } from "contexts/models/chain"
 import store from "contexts/store"
@@ -5,6 +6,7 @@ import Header from "layouts/Header"
 import type { AppProps } from "next/app"
 import { Provider } from "react-redux"
 import ThemeProvider from "Theme"
+import "Theme/global.css"
 
 const CHAIN_CONFIGURATIONS: ChainList = {
   ethereum: {
@@ -15,7 +17,7 @@ const CHAIN_CONFIGURATIONS: ChainList = {
   binance: {
     chainName: "binance",
     connectors: ["injected", "walletconnect", "coinbase"],
-    chainIds: [56, 97],
+    chainIds: [56],
   },
   avalanche: {
     chainName: "avalanche",
@@ -34,15 +36,19 @@ const CHAIN_CONFIGURATIONS: ChainList = {
   },
 }
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <Provider store={store}>
       <LocalStorageLoader />
       <ConnectorLoader configurations={CHAIN_CONFIGURATIONS} />
       <ThemeProvider>
         <Header />
-        <Component {...pageProps} />
+        <ConnectorLoading>
+          <Component {...pageProps} />
+        </ConnectorLoading>
       </ThemeProvider>
     </Provider>
   )
 }
+
+export default App

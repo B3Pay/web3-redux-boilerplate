@@ -1,9 +1,10 @@
+import { Chip, Stack } from "@mui/material"
 import Badge from "@mui/material/Badge"
 import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
-import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import { useActiveChainNames } from "hooks/useChains"
+import { setChainNameFirst } from "contexts/functions"
+import { useIsActiveChainName } from "hooks/useChains"
 import Image from "next/image"
 
 interface ChainButtonProps {
@@ -19,7 +20,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
   chainName,
   setSelectChain,
 }) => {
-  const activeChain = useActiveChainNames()
+  const isActive = useIsActiveChainName(chainName)
 
   return (
     <Paper
@@ -29,7 +30,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
         cursor: "pointer",
         position: "relative",
         width: 100,
-        height: 100,
+        height: 120,
         display: "flex",
         overflow: "hidden",
         alignItems: "center",
@@ -37,7 +38,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
         justifyContent: "center",
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        bgcolor: selected ? "background.paper" : "transparent",
+        bgcolor: selected ? "background.paper" : "background.default",
       }}
     >
       <Badge
@@ -46,10 +47,17 @@ const ChainButton: React.FC<ChainButtonProps> = ({
           horizontal: "right",
         }}
         color={connected ? "success" : "info"}
-        variant="dot"
-        invisible={!activeChain.includes(chainName)}
+        variant="standard"
+        badgeContent={connected ? "✓" : "!"}
+        invisible={!isActive}
         sx={{
           margin: 1,
+          "& .MuiBadge-badge": {
+            fontSize: 10,
+            width: 16,
+            height: 16,
+            minWidth: 16,
+          },
         }}
       >
         <Box
@@ -60,7 +68,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
           height={55}
           justifyContent="center"
           alignItems="center"
-          component={Stack}
+          display="flex"
         >
           <Image
             src={`/assets/images/chain/${chainName}.svg`}
@@ -70,22 +78,41 @@ const ChainButton: React.FC<ChainButtonProps> = ({
           />
         </Box>
       </Badge>
-      <Typography
-        textTransform="uppercase"
-        variant="caption"
-        maxWidth={100}
-        textAlign="center"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        whiteSpace="nowrap"
-        sx={{
-          borderRadius: 1,
-          paddingRight: 1,
-          paddingLeft: 1,
-        }}
-      >
-        {chainName}
-      </Typography>
+      <Stack>
+        {!connected && selected && isActive ? (
+          <Chip
+            size="small"
+            label="Switch"
+            color="warning"
+            variant="outlined"
+            onClick={() => setChainNameFirst(chainName)}
+            sx={{
+              width: 80,
+              height: 20,
+              borderRadius: 1,
+            }}
+          />
+        ) : (
+          <Typography
+            color={selected ? "text.primary" : "text.secondary"}
+            textTransform="uppercase"
+            variant="caption"
+            textAlign="center"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            sx={{
+              width: 90,
+              height: 20,
+              paddingLeft: 1,
+              borderRadius: 1,
+              paddingRight: 1,
+            }}
+          >
+            {chainName}
+          </Typography>
+        )}
+      </Stack>
     </Paper>
   )
 }

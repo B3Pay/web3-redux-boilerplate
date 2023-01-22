@@ -23,10 +23,8 @@ const Theme: React.FC<ThemeProps> = ({ children, ...rest }) => {
       <GlobalStyles
         styles={{
           body: {
-            backgroundColor: mode === "dark" ? "#353535" : "#f0f0f0",
-            boxSizing: "border-box",
-            padding: 0,
-            margin: 0,
+            fontFamily: theme.typography.fontFamily,
+            backgroundColor: theme.palette.background.default,
           },
         }}
       />

@@ -5,6 +5,10 @@ export function getDefaultConnectors() {
   return store.getState().chain.list.default.connectors
 }
 
+export function getChainDetails(chainName: string) {
+  return store.getState().chain.list[chainName]
+}
+
 export function getChainNameByChainId(chainId: number) {
   const chainList = getChainList()
 
@@ -35,7 +39,7 @@ export function getFirstChainName() {
   return chainNames[0]
 }
 
-export function getChainNameIsAvtive(chainName: string) {
+export function getChainNameIsActive(chainName: string) {
   const activeChainNames = getAllActiveChainNames()
 
   return activeChainNames.includes(chainName)

@@ -1,13 +1,13 @@
 import type { BigNumber } from "@ethersproject/bignumber"
 import { useEffect, useState } from "react"
-import { ConnectorName } from "utils/types"
-import { useProvider } from "./useProvider"
+import { useProviderByChainName } from "./useProvider"
 
 function useBalances(
-  connectorName: ConnectorName,
+  chainName: string,
   accounts?: string[]
-): BigNumber[] | undefined {
-  const provider = useProvider(connectorName)
+): BigNumber[] | number[] | undefined {
+  const provider = useProviderByChainName(chainName)
+
   const [balances, setBalances] = useState<BigNumber[] | undefined>()
 
   useEffect(() => {

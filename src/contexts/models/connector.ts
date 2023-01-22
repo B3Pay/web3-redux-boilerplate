@@ -16,13 +16,14 @@ import {
   SwitchChainParams,
   UpdateWithKeyAndChainName,
 } from "../types/connector"
+
 // we save connectors here, because it is too big
 // and causes performance issues when serializing
 export const connectorCache: ConnectorCache = {}
 
 const connectorStatus: ConnectorState = {
   chainId: undefined,
-  accounts: [],
+  accounts: undefined,
   activating: false,
   chainName: undefined,
   error: undefined,
@@ -146,13 +147,13 @@ const connector = createModel<RootModel>()({
           await connector.activate(
             desiredChainId === -1 ? undefined : desiredChainId
           )
-        else {
+        else
           await connector.activate(
             desiredChainId === -1
               ? undefined
               : getAddChainParameters(desiredChainId)
           )
-        }
+
         dispatch.connector.SET_ERROR({ key, error: undefined })
       } catch (error: any) {
         console.log(error)

@@ -12,7 +12,7 @@ export type ColorRanges = {
 
 export type ConnectModalType = {
   open: boolean
-  tab?: string
+  tab: string | undefined
 }
 
 export type DefaultSettingState = {

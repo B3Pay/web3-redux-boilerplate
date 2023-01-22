@@ -4,7 +4,7 @@ import {
   useSelectedChainName,
 } from "contexts/hooks/useChain"
 import {
-  useConnectorKeys,
+  useAllConnectorNamesArray,
   useConnectorStates,
 } from "contexts/hooks/useConnector"
 import { connectorCache } from "contexts/models/connector"
@@ -31,9 +31,20 @@ export const useConnectorByName = (
 }
 
 export function useActiveConnectorName() {
-  const connectors = useConnectorKeys()
+  const connectors = useAllConnectorNamesArray()
   const selectedChain = useSelectedChainName()
   const connectorName = useChainActiveConnectorName(selectedChain)
+
+  if (connectorName) {
+    return connectorName
+  }
+
+  return connectors.find(getIsActive) as ConnectorName
+}
+
+export function useActiveConnectorNameByChainName(chainName: string) {
+  const connectors = useAllConnectorNamesArray()
+  const connectorName = useChainActiveConnectorName(chainName)
 
   if (connectorName) {
     return connectorName
