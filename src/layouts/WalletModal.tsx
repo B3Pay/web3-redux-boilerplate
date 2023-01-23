@@ -13,24 +13,29 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import ChainTab from "components/ChainTab"
 import ConnectorCard from "components/ConnectorCard"
 import { setConnectModal } from "contexts/functions/setSetting"
-import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChain"
+import {
+  useChainConfigList,
+  useChainOrderList,
+  useSelectedChainOrder,
+} from "contexts/hooks/useChain"
 
 interface WalletModalProps {
   open: boolean
   tab: string | undefined
-  onClose: (open: boolean) => void
 }
 
-const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
+const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
   const matches = useMediaQuery("(min-width:600px)")
 
-  const chainList = useChainList()
-  const connectedChain = useChainOrderByIndex()
+  const chainConfigList = useChainConfigList()
+  const chainOrderList = useChainOrderList()
+
+  const selectedChain = useSelectedChainOrder()
 
   return (
     <Modal
       open={open}
-      onClose={() => onClose(false)}
+      onClose={() => setConnectModal(false)}
       closeAfterTransition
       disableEnforceFocus
       keepMounted
@@ -63,7 +68,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
               edge="end"
               color="inherit"
               aria-label="close"
-              onClick={() => onClose(false)}
+              onClick={() => setConnectModal(false)}
             >
               <CloseIcon />
             </IconButton>
@@ -76,20 +81,20 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
             justifyContent="space-between"
             bgcolor="background.default"
           >
-            {chainList.map(({ chainName }) => (
+            {chainOrderList.map((chainName) => (
               <ChainTab
                 key={chainName}
                 chainName={chainName}
                 selected={chainName === tab}
-                connected={connectedChain === chainName}
-                setSelectChain={() => setConnectModal(true, chainName)}
+                connected={selectedChain === chainName}
+                onChange={() => setConnectModal(true, chainName)}
               />
             ))}
           </Stack>
           <List>
-            {chainList.map(
-              ({ chainName, connectors, chainIds }) =>
-                chainName === tab &&
+            {chainConfigList.map(
+              ({ key, connectors, chainIds }) =>
+                key === tab &&
                 connectors.map((connector, index) => (
                   <Box key={connector} component="li">
                     <ConnectorCard name={connector} chainIds={chainIds} />

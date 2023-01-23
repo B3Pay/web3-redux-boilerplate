@@ -1,5 +1,5 @@
 import { ConnectorUpdate } from "@web3-react/types6"
-import { AbstractConnector } from "../contexts/types/connector"
+import { AbstractConnector } from "../contexts/types/connection"
 import { normalizeAccount, normalizeChainId } from "./normalizers"
 
 export class StaleConnectorError extends Error {

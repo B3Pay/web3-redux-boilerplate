@@ -1,7 +1,7 @@
 import type { BaseProvider, Web3Provider } from "@ethersproject/providers"
 import { useEffect, useMemo, useState } from "react"
 import { ConnectorName } from "utils/types"
-import { useConnectorStates } from "../contexts/hooks/useConnector"
+import { useConnection } from "../contexts/hooks/useConnection"
 import {
   getConnector,
   useActiveConnectorName,
@@ -39,7 +39,7 @@ export function useProvider<T extends BaseProvider = Web3Provider>(
   key: ConnectorName,
   enabled = true
 ): T | undefined {
-  const { isActive, chainId } = useConnectorStates(key)
+  const { isActive, chainId } = useConnection(key)
 
   const connector = getConnector(key)
 

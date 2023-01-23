@@ -1,44 +1,48 @@
 import store from "contexts/store"
+import { ConfigDetail, DefaultChainState } from "contexts/types/chain"
 import { ConnectorName } from "utils/types"
-import { getAllActiveChainNames } from "./getConnector"
+import { getAllActiveChainNames } from "./getConnection"
 
-export function getDefaultConnectors() {
-  return store.getState().chain.list.default.connectors
+export default function getChainState(): DefaultChainState {
+  return store.getState().chain
 }
 
-export function getChainOrder() {
-  return store.getState().chain.order
+export function getChainConfigState(): DefaultChainState["config"] {
+  return getChainState().config
 }
 
-export function getChainList() {
-  return store.getState().chain.list
+export function getChainOrderList(): string[] {
+  return getChainState().order
 }
 
-export function getChainDetails(chainName: string) {
-  return store.getState().chain.list[chainName]
+export function getChainConfig(chainName: string): ConfigDetail {
+  return getChainState().config[chainName]
 }
 
-export function getChainNameByChainId(chainId: number) {
-  const chainNames = getChainOrder()
-
-  return chainNames.find((chainName) =>
-    getChainDetails(chainName).chainIds.includes(chainId)
-  )
-}
-
-export function getChainNameByIndex(index = 0) {
-  const chainNames = getChainOrder()
+export function getChainNameByIndex(index = 0): string {
+  const chainNames = getChainOrderList()
 
   return chainNames[index]
 }
 
-export function getIsActiveByChainName(chainName: string) {
+export function getIsActiveByChainName(chainName: string): boolean {
   const activeChainNames = getAllActiveChainNames()
 
   return activeChainNames.includes(chainName)
 }
 
-export function findChainName(connectorName: ConnectorName, chainId: number) {
+export function getChainNameByChainId(chainId: number): string | undefined {
+  const chainNames = getChainOrderList()
+
+  return chainNames.find((chainName) =>
+    getChainConfig(chainName).chainIds.includes(chainId)
+  )
+}
+
+export function findChainName(
+  connectorName: ConnectorName,
+  chainId: number
+): string {
   if (getDefaultConnectors().includes(connectorName)) {
     return "default"
   }
@@ -48,4 +52,8 @@ export function findChainName(connectorName: ConnectorName, chainId: number) {
   if (chainName === undefined) throw new Error("Chain not found")
 
   return chainName
+}
+
+export function getDefaultConnectors(): ConnectorName[] {
+  return getChainState().config.default.connectors
 }

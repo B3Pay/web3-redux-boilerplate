@@ -13,7 +13,11 @@ import type {
   ConnectorUpdate,
 } from "@web3-react/types6"
 import type { EventEmitter } from "events"
-import type { ConnectorName, ConnectorType } from "utils/types"
+import type { ConnectionType, ConnectorName } from "utils/types"
+
+export type DefaultConnectionState = {
+  [key in ConnectorName]?: Connection
+}
 
 export interface Web3Error extends Error {
   code: number
@@ -35,7 +39,7 @@ export declare abstract class AbstractConnector extends EventEmitter {
 }
 
 export type ConnectorWithKey = {
-  connector: ConnectorType
+  connector: ConnectionType
   key: ConnectorName
 }
 
@@ -58,21 +62,25 @@ export type Web3ReactStateWithConnector = Web3ReactStateWithKey & {
   connector: ConnectorName
 }
 
-export interface ConnectorState extends Web3ReactState {
+export interface Connection extends Web3ReactState {
   error: Web3Error | undefined
   chainName: string | undefined
 }
 
+export interface ConnectionStateWithActive extends Connection {
+  isActive: boolean
+}
+
 export type ConnectorCache = {
-  [key in ConnectorName]?: ConnectorType
+  [key in ConnectorName]?: ConnectionType
 }
 
 export type Nullifier = {
   [key in ConnectorName]: number
 }
 
-export type Connectors = {
-  [key in ConnectorName]?: ConnectorState
+export type Connections = {
+  [key in ConnectorName]?: Connection
 }
 
 /**
@@ -90,7 +98,7 @@ export type Web3ContextType<T extends BaseProvider = Web3Provider> = {
   signer: JsonRpcSigner | undefined
 }
 
-export type ConnectorWithChainId = {
+export type UpdateConnectionParams = {
   key: ConnectorName
   desiredChainId: number
 }

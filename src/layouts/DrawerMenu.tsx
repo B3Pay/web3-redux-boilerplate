@@ -13,7 +13,6 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
-import { capitalize } from "@mui/material/utils"
 import { setThemeColor, setThemeMode } from "contexts/functions"
 import {
   getAllThemeColorsByRange,
@@ -84,7 +83,7 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
               >
                 {options.map((option) => (
                   <MenuItem key={option} value={option}>
-                    {capitalize(option)}
+                    {option}
                   </MenuItem>
                 ))}
               </Select>

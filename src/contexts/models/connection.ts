@@ -8,20 +8,21 @@ import { ConnectorName } from "utils/types"
 import { isValidChainId, validateAccount } from "utils/validators"
 import { RootModel } from "../store"
 import {
+  Connection,
   ConnectorCache,
-  ConnectorState,
-  ConnectorWithChainId,
+  DefaultConnectionState,
   ErrorPayload,
   Nullifier,
   SwitchChainParams,
+  UpdateConnectionParams,
   UpdateWithKeyAndChainName,
-} from "../types/connector"
+} from "../types/connection"
 
 // we save connectors here, because it is too big
 // and causes performance issues when serializing
 export const connectorCache: ConnectorCache = {}
 
-const connectorStatus: ConnectorState = {
+export const connectionDefaultState: Connection = {
   chainId: undefined,
   accounts: undefined,
   activating: false,
@@ -41,32 +42,28 @@ const nullifier: Nullifier = {
   walletconnect: 0,
 }
 
-export type DefaultConnectorState = {
-  [key in ConnectorName]?: ConnectorState
-}
-
-const connector = createModel<RootModel>()({
-  name: "connector",
-  state: {} as DefaultConnectorState,
+const connection = createModel<RootModel>()({
+  name: "connection",
+  state: {} as DefaultConnectionState,
   reducers: {
-    ADD_CONNECTOR: (state, key: ConnectorName) => {
+    ADD_CONNECTION: (state, key: ConnectorName) => {
       return {
         ...state,
-        [key]: connectorStatus,
+        [key]: connectionDefaultState,
       }
     },
-    RESET_CONNECTOR: (state, key: ConnectorName) => {
+    RESET_CONNECTION: (state, key: ConnectorName) => {
       return {
         ...state,
-        [key]: connectorStatus,
+        [key]: connectionDefaultState,
       }
     },
-    REMOVE_CONNECTOR: (state, key: ConnectorName) => {
+    REMOVE_CONNECTION: (state, key: ConnectorName) => {
       const newState = { ...state }
       delete newState[key]
       return newState
     },
-    UPDATE_CONNECTOR: (state, payload: UpdateWithKeyAndChainName) => {
+    UPDATE_CONNECTION: (state, payload: UpdateWithKeyAndChainName) => {
       const { key } = payload
       // determine the next chainId and accounts
       const chainId = payload.chainId ?? state[key]?.chainId
@@ -118,12 +115,12 @@ const connector = createModel<RootModel>()({
 
         const connectorFile = await import(`connectors/${name}`)
         const connector = connectorFile.default(
-          dispatch.connector.connectorActions(name)
+          dispatch.connection.connectorActions(name)
         )
 
         connectorCache[name] = connector
 
-        dispatch.connector.ADD_CONNECTOR(name)
+        dispatch.connection.ADD_CONNECTION(name)
 
         try {
           console.log(`Attempting to connect eagerly to ${name}`)
@@ -135,7 +132,7 @@ const connector = createModel<RootModel>()({
       }
       dispatch.chain.initializeChain()
     },
-    activate: async ({ key, desiredChainId }: ConnectorWithChainId) => {
+    activate: async ({ key, desiredChainId }: UpdateConnectionParams) => {
       console.log(
         `Attempting to connect to ${key} on chainId ${desiredChainId}`
       )
@@ -154,13 +151,13 @@ const connector = createModel<RootModel>()({
               : getAddChainParameters(desiredChainId)
           )
 
-        dispatch.connector.SET_ERROR({ key, error: undefined })
+        dispatch.connection.SET_ERROR({ key, error: undefined })
       } catch (error: any) {
         console.log(error)
-        dispatch.connector.SET_ERROR({ key, error })
+        dispatch.connection.SET_ERROR({ key, error })
       }
     },
-    addChain: ({ key, desiredChainId }: ConnectorWithChainId) => {
+    addChain: ({ key, desiredChainId }: UpdateConnectionParams) => {
       console.log(
         `Attempting to connect to ${key} on chainId ${desiredChainId}`
       )
@@ -173,9 +170,9 @@ const connector = createModel<RootModel>()({
           method: "wallet_addEthereumChain",
           params: [{ ...params, chainId: `0x${desiredChainId.toString(16)}` }],
         })
-        dispatch.connector.SET_ERROR({ key, error: undefined })
+        dispatch.connection.SET_ERROR({ key, error: undefined })
       } catch (error: any) {
-        dispatch.connector.SET_ERROR({ key, error })
+        dispatch.connection.SET_ERROR({ key, error })
       }
     },
     switchChainId: async ({ key, desiredChainId }: SwitchChainParams) => {
@@ -188,7 +185,7 @@ const connector = createModel<RootModel>()({
           desiredChainId === -1 ? undefined : desiredChainId
         )
       } catch (error: any) {
-        dispatch.connector.SET_ERROR({ key, error })
+        dispatch.connection.SET_ERROR({ key, error })
       }
     },
     disconnect: async (key: ConnectorName) => {
@@ -208,11 +205,11 @@ const connector = createModel<RootModel>()({
       startActivation: () => {
         const nullifierCached = ++nullifier[key]
 
-        dispatch.connector.START_ACTIVATION(key)
+        dispatch.connection.START_ACTIVATION(key)
         // return a function that cancels the activation iff nothing else has happened
         return () => {
           if (nullifier[key] === nullifierCached)
-            dispatch.connector.STOP_ACTIVATION(key)
+            dispatch.connection.STOP_ACTIVATION(key)
         }
       },
       update: (payload: Web3ReactStateUpdate) => {
@@ -235,16 +232,16 @@ const connector = createModel<RootModel>()({
         }
 
         nullifier[key]++
-        dispatch.connector.UPDATE_CONNECTOR({ ...updateState, key })
+        dispatch.connection.UPDATE_CONNECTION({ ...updateState, key })
 
         dispatch.chain.sortChainOrder(updateState.chainName)
       },
       resetState: () => {
         nullifier[key]++
-        dispatch.connector.RESET_CONNECTOR(key)
+        dispatch.connection.RESET_CONNECTION(key)
       },
     }),
   }),
 })
 
-export default connector
+export default connection

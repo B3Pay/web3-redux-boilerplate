@@ -1,11 +1,11 @@
 import {
-  useAllConnectorStateArray,
-  usePriorityConnector,
-} from "contexts/hooks/useConnector"
+  useConnectionStateList,
+  usePriorityConnection,
+} from "contexts/hooks/useConnection"
 import { useMemo } from "react"
 
 export function useAccounts(): string[] | undefined {
-  const web3 = usePriorityConnector()
+  const web3 = usePriorityConnection()
   return web3?.accounts
 }
 
@@ -14,7 +14,7 @@ export function useAccount(): string | undefined {
 }
 
 export function useAllAccounts() {
-  const connectors = useAllConnectorStateArray()
+  const connectors = useConnectionStateList()
 
   return useMemo(
     () =>

@@ -1,14 +1,14 @@
 import Container from "@mui/material/Container"
 import Skeleton from "@mui/material/Skeleton"
 import { Box } from "@mui/system"
-import { useInitialized } from "contexts/hooks/useChain"
+import { useIsInitialized } from "contexts/hooks/useChain"
 
 interface ConnectorLoadingProps {
   children: React.ReactNode
 }
 
 const ConnectorLoading: React.FC<ConnectorLoadingProps> = ({ children }) => {
-  const init = useInitialized()
+  const init = useIsInitialized()
 
   return (
     <Container maxWidth="md" sx={{ mt: 2 }}>

@@ -5,6 +5,7 @@ import {
   ConnectModalType,
   DefaultSettingState,
   SnackBarType,
+  ThemeMode,
 } from "../types/setting"
 
 const defaultState: DefaultSettingState = {
@@ -59,7 +60,7 @@ const setting = createModel<RootModel>()({
         },
       }
     },
-    SET_THEME_MODE: (state, mode: "dark" | "light" | "system") => {
+    SET_THEME_MODE: (state, mode: ThemeMode) => {
       localStorage.setItem("themeMode", mode)
       return {
         ...state,

@@ -10,6 +10,8 @@ export type ColorRanges = {
   [key in ColorPaletteKeys]: string
 }
 
+export type ThemeMode = "dark" | "light" | "system"
+
 export type ConnectModalType = {
   open: boolean
   tab: string | undefined
@@ -23,7 +25,7 @@ export type DefaultSettingState = {
   connectModal: ConnectModalType
   snackbar: SnackBarType
   theme: {
-    mode: "dark" | "light" | "system"
+    mode: ThemeMode
     color: ColorKeys
   }
   version: string

@@ -1,14 +1,14 @@
 import MenuItem from "@mui/material/MenuItem"
 import TextField from "@mui/material/TextField"
 import { setChainNameFirst } from "contexts/functions/setChain"
-import { useSelectedChainName } from "contexts/hooks/useChain"
+import { useSelectedChainConfig } from "contexts/hooks/useChain"
 import { useAllAccounts } from "hooks/useAccounts"
 import { getEllipsis } from "utils"
 
 interface AccountSelectProps {}
 
 const AccountSelect: React.FC<AccountSelectProps> = () => {
-  const selectedChainName = useSelectedChainName()
+  const selectedChainName = useSelectedChainConfig()
   const allAccounts = useAllAccounts()
 
   return (

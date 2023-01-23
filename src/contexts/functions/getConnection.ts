@@ -1,37 +1,55 @@
 import { Web3ReactState } from "@web3-react/types"
 import store from "contexts/store"
+import {
+  Connection,
+  ConnectionStateWithActive,
+  DefaultConnectionState,
+} from "contexts/types/connection"
 import { getChainNativeCurrency } from "utils/chains"
 import { ConnectorName } from "utils/types"
 import { findChainName } from "./getChain"
 
-export function getConnectors() {
-  return store.getState().connector
+export function getConnectionState(): DefaultConnectionState {
+  return store.getState().connection
 }
 
-export function getConnector(connectorName: ConnectorName) {
-  return store.getState().connector[connectorName]
+export function getConnectorNameList(): ConnectorName[] {
+  const connection = getConnectionState()
+  return Object.keys(connection) as ConnectorName[]
 }
 
-export function getConnectorNames() {
-  return Object.keys(getConnectors()) as ConnectorName[]
-}
+export function getConnectionDetail(connectorName: ConnectorName): Connection {
+  const connection = store.getState().connection[connectorName]
 
-export function getConnectorStates(connectorName: ConnectorName) {
   return (
-    getConnector(connectorName) ?? {
+    connection || {
       chainId: undefined,
       accounts: undefined,
       activating: false,
-      chainName: "default",
+      chainName: undefined,
+      error: undefined,
     }
   )
 }
 
+export function getConnection(
+  connectorName: ConnectorName
+): ConnectionStateWithActive {
+  const states = getConnectionDetail(connectorName)
+
+  const isActive = computeConnectionIsActive(states)
+
+  return {
+    ...states,
+    isActive,
+  }
+}
+
 export function getConnectorNameByChainName(chainName: string) {
-  const connectorNames = getConnectorNames()
+  const connectorNames = getConnectorNameList()
 
   return connectorNames.find(
-    (connectorName) => getConnectorStates(connectorName).chainName === chainName
+    (connectorName) => getConnection(connectorName).chainName === chainName
   )
 }
 
@@ -40,7 +58,7 @@ export function getChainIdByChainName(chainName: string) {
 
   if (!connector) return undefined
 
-  return getConnectorStates(connector).chainId
+  return getConnection(connector).chainId
 }
 
 export function getNativeCurrencyByChainName(chainName: string) {
@@ -52,11 +70,11 @@ export function getNativeCurrencyByChainName(chainName: string) {
 }
 
 export function getAllActiveChainNames() {
-  const connectorNames = getConnectorNames()
+  const connectorNames = getConnectorNameList()
   const activeChainNames: string[] = []
 
   connectorNames.forEach((connectorName) => {
-    const { chainId } = getConnectorStates(connectorName)
+    const { chainId } = getConnection(connectorName)
     if (chainId) {
       const chainName = findChainName(connectorName, chainId)
       if (chainName !== "default" && !activeChainNames.includes(chainName)) {
@@ -68,16 +86,16 @@ export function getAllActiveChainNames() {
   return activeChainNames
 }
 
-export function getIsActiveByChainIds(
+export function getConnectionIsActiveByChainIds(
   connectorName: ConnectorName,
   chainIds: number[]
 ) {
-  const { chainId, accounts, activating } = getConnectorStates(connectorName)
+  const { chainId, accounts, activating } = getConnection(connectorName)
 
   return chainIds.some(
     (id) =>
       chainId === id &&
-      computeIsActive({
+      computeConnectionIsActive({
         chainId,
         accounts,
         activating,
@@ -85,17 +103,17 @@ export function getIsActiveByChainIds(
   )
 }
 
-export function getIsActive(connectorName: ConnectorName) {
-  const { chainId, accounts, activating } = getConnectorStates(connectorName)
+export function getConnectionIsActive(connectorName: ConnectorName) {
+  const { chainId, accounts, activating } = getConnection(connectorName)
 
-  return computeIsActive({
+  return computeConnectionIsActive({
     chainId,
     accounts,
     activating,
   })
 }
 
-export function computeIsActive(state?: Web3ReactState) {
+export function computeConnectionIsActive(state?: Web3ReactState) {
   if (!state) return false
   return Boolean(state.chainId && state.accounts && !state.activating)
 }

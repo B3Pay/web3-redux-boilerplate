@@ -1,4 +1,3 @@
-import { capitalize } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
@@ -10,12 +9,12 @@ import Accounts from "components/Accounts"
 import AccountSelect from "components/AccountSelect"
 import ChainIcon from "components/ChainIcon"
 import ChainSelect from "components/ChainSelect"
-import { useSelectedChainName } from "contexts/hooks/useChain"
+import { useSelectedChainConfig } from "contexts/hooks/useChain"
 import useConnector from "hooks/useConnector"
 import { useState } from "react"
 
 export default function Home() {
-  const selectedChainName = useSelectedChainName()
+  const { name } = useSelectedChainConfig()
   const { signer, accounts } = useConnector()
 
   const [to, setTo] = useState<string>("")
@@ -42,11 +41,9 @@ export default function Home() {
   return (
     <Card>
       <CardHeader
-        title={capitalize(selectedChainName)}
-        subheader={
-          <Accounts chainName={selectedChainName} accounts={accounts} />
-        }
-        avatar={<ChainIcon chainName={selectedChainName} />}
+        title={name}
+        subheader={<Accounts chainName={name} accounts={accounts} />}
+        avatar={<ChainIcon chainName={name} />}
         action={accounts?.length ? <AccountSelect /> : <ChainSelect />}
       />
       <Box px={2} py={1}>
@@ -58,7 +55,7 @@ export default function Home() {
             justifyContent="center"
             pb={2}
           >
-            <Typography variant="body1">Chain: {selectedChainName}</Typography>
+            <Typography variant="body1">Chain: {name}</Typography>
             <Typography variant="body1">{accounts[0]}</Typography>
             <Button variant="outlined" fullWidth onClick={testSignature}>
               Test Signature

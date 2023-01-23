@@ -1,67 +1,58 @@
-import { getIsActiveByChainIds } from "contexts/functions/getConnector"
+import { getConnectionIsActiveByChainIds } from "contexts/functions/getConnection"
 import { RootState } from "contexts/store"
+import { ConfigDetail, DefaultChainState } from "contexts/types/chain"
 import { useSelector } from "react-redux"
+import { ConnectorName } from "utils/types"
 
-export default function useChain() {
+export default function useChainState(): DefaultChainState {
   return useSelector((state: RootState) => state.chain)
 }
 
-export function useChainListObject() {
-  return useSelector((state: RootState) => state.chain.list)
+export function useChainConfigState(): DefaultChainState["config"] {
+  return useSelector((state: RootState) => state.chain.config)
 }
 
-export function useChainListItem(key: string) {
-  const list = useSelector((state: RootState) => state.chain.list[key])
-  return (
-    list ?? {
-      chainIds: [],
-      connectors: [],
-      chainName: "",
-    }
-  )
-}
-
-export function useInitialized() {
+export function useIsInitialized(): DefaultChainState["initialized"] {
   return useSelector((state: RootState) => state.chain.initialized)
 }
 
-export function useChainOrder(withDefault?: boolean) {
+export function useChainOrderList(withDefault?: boolean): string[] {
   const order = useSelector((state: RootState) => state.chain.order)
   return withDefault ? order : order.filter((item) => item !== "default")
 }
 
-export function useChainOrderByIndex(index = 0) {
-  return useChainOrder()[index]
+export function useSelectedChainOrder(): string {
+  return useSelector((state: RootState) => state.chain.order[0])
 }
 
-export function useChainList(withDefault?: boolean) {
-  const order = useChainOrder(withDefault)
-  const list = useChainListObject()
-  return order.map((key) => list[key])
+export function useChainConfigList(withDefault?: boolean): ConfigDetail[] {
+  const order = useChainOrderList(withDefault)
+  const configs = useChainConfigState()
+
+  return order.map((key) => configs[key])
 }
 
-export function useSelectedChainName() {
-  return useChainOrderByIndex(0)
-}
-
-export function useSelectedChainInfo() {
-  const selectedChain = useSelectedChainName()
-  return useSelector((state: RootState) => state.chain.list[selectedChain])
-}
-
-export function useChainActiveConnectorName(key: string) {
-  const { chainIds, connectors } = useChainListItem(key)
-
-  return connectors.find((connector) =>
-    getIsActiveByChainIds(connector, chainIds)
+export function useChainConfig(key: string): ConfigDetail {
+  const config = useSelector((state: RootState) => state.chain.config[key])
+  return (
+    config ?? {
+      chainIds: [],
+      connectors: [],
+      name: "",
+    }
   )
 }
 
-export function useChainNames(withDefault?: boolean) {
-  return useChainOrder(withDefault)
+export function useSelectedChainConfig(): ConfigDetail {
+  const chainName = useSelectedChainOrder()
+
+  return useChainConfig(chainName)
 }
 
-export function useChainIds(name: string) {
-  const chainList = useChainListItem(name)
-  return chainList?.chainIds ?? []
+export function useChainActiveConnectorName(key: string): ConnectorName {
+  const { chainIds, connectors } = useChainConfig(key)
+
+  return connectors.find((connector) =>
+    getConnectionIsActiveByChainIds(connector, chainIds)
+  ) as ConnectorName
 }

@@ -1,37 +1,17 @@
 import { createModel } from "@rematch/core"
-import { getAllActiveChainNames } from "contexts/functions/getConnector"
-import { ConnectorName } from "utils/types"
+import { getAllActiveChainNames } from "contexts/functions/getConnection"
+import {
+  ChainConfig,
+  ConfigDetail,
+  DefaultChainState,
+  PartialConfigDetail,
+} from "contexts/types/chain"
 import { RootModel } from "../store"
 
-export type ChainInfoWithKey = Partial<ChainInfo> & {
-  key: string
-}
-
-export type ChainList = {
-  [key: string]: ChainInfo
-  default: ChainInfo
-}
-
-export type ChainInfo = {
-  chainIds: number[]
-  chainName: string
-  connectors: ConnectorName[]
-}
-
-export interface DefaultChainState {
-  initialized: boolean
-  list: ChainList
-  order: string[]
-}
-
-export type ChangeOrderParams = {
-  chainId: number
-  connectorName: ConnectorName
-}
-
-const chainStatus: ChainInfo = {
+const chainDetail: ConfigDetail = {
+  key: "ethereum",
   chainIds: [1],
-  chainName: "ethereum",
+  name: "Ethereum",
   connectors: ["network"],
 }
 
@@ -40,38 +20,38 @@ const chain = createModel<RootModel>()({
   state: {
     order: ["ethereum"],
     initialized: false,
-    list: {
-      default: chainStatus,
+    config: {
+      default: chainDetail,
     },
   } as DefaultChainState,
 
   reducers: {
     REMOVE: (state, key: string) => {
-      const list = { ...state.list }
-      delete list[key]
+      const config = { ...state.config }
+      delete config[key]
       const order = state.order.filter((item) => item !== key)
-      return { ...state, order, list }
+      return { ...state, order, config }
     },
     SET_INITIALIZED: (state) => {
       return { ...state, initialized: true }
     },
-    UPDATE_CHAIN_LIST: (state, list: ChainList) => {
-      const order = Object.keys(list)
+    ADD_CONFIG: (state, config: ChainConfig) => {
+      const order = Object.keys(config)
       return {
         ...state,
         order,
-        list,
+        config,
       }
     },
-    UPDATE_LIST_ITEM: (state, payload: ChainInfoWithKey) => {
+    UPDATE_CONFIG: (state, payload: PartialConfigDetail) => {
       const { key, ...rest } = payload
 
       return {
         ...state,
-        list: {
-          ...state.list,
+        config: {
+          ...state.config,
           [key]: {
-            ...state.list[key],
+            ...state.config[key],
             ...rest,
           },
         },

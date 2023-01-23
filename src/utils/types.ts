@@ -3,27 +3,27 @@ import type { Web3Connectors } from "connectors"
 
 export type ConnectorName = keyof Web3Connectors
 
-export type ConnectorArray = ConnectorName[]
+export type ConnectionArray = ConnectorName[]
 
-export type NeededConnector = Array<ConnectorName>
+export type NeededConnection = Array<ConnectorName>
 
-export type ConnectorType = Web3Connectors[ConnectorName] | Connector
+export type ConnectionType = Web3Connectors[ConnectorName] | Connector
 
-export type ConnectorDetails = ConnectorDetail[]
+export type ConnectionDetails = ConnectionDetail[]
 
-export type ConnectorDetail = {
+export type ConnectionDetail = {
   name: ConnectorName
   icon: string
-  connector: ConnectorType
+  connector: ConnectionType
 }
 
-export type ConnectorDetailFunction<T extends ConnectorName> = {
+export type ConnectionDetailFunction<T extends ConnectorName> = {
   name: T
   icon: string
   connector: Web3Connectors[T]
 }
 
-export type InitialConnectorDetail = {
+export type InitialConnectionDetail = {
   name: ConnectorName
   chainName: string
 }

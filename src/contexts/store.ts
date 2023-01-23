@@ -1,7 +1,7 @@
 import { init, Models, RematchDispatch, RematchRootState } from "@rematch/core"
 import loadingPlugin, { ExtraModelsFromLoading } from "@rematch/loading"
 import chain from "./models/chain"
-import connector from "./models/connector"
+import connection from "./models/connection"
 import contract from "./models/contract"
 import setting from "./models/setting"
 import wallet from "./models/wallet"
@@ -18,7 +18,7 @@ export interface RootModel extends Models<RootModel> {
   wallet: typeof wallet
   setting: typeof setting
   contract: typeof contract
-  connector: typeof connector
+  connection: typeof connection
 }
 
 export const models: RootModel = {
@@ -26,7 +26,7 @@ export const models: RootModel = {
   wallet,
   setting,
   contract,
-  connector,
+  connection,
 }
 
 const store = init<RootModel, FullModel>({ models, plugins: [loadingPlugin()] })

@@ -10,20 +10,20 @@ interface ChainTabProps {
   selected: boolean
   connected: boolean
   chainName: string
-  setSelectChain: (chainName: string) => void
+  onChange: () => void
 }
 
 const ChainTab: React.FC<ChainTabProps> = ({
   selected,
   connected,
   chainName,
-  setSelectChain,
+  onChange,
 }) => {
   const isActive = useIsActiveChainName(chainName)
 
   return (
     <Paper
-      onClick={() => setSelectChain(chainName)}
+      onClick={onChange}
       elevation={selected ? 1 : 0}
       sx={{
         cursor: "pointer",

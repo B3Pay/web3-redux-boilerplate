@@ -1,5 +1,5 @@
 import { getChainNameByIndex } from "contexts/functions/getChain"
-import { ColorKeys } from "contexts/types/setting"
+import { ColorKeys, ThemeMode } from "contexts/types/setting"
 import store from "../store"
 import { SnackBarType } from "../types/setting"
 
@@ -9,7 +9,7 @@ export const setModal = (modal: boolean) =>
 export const setThemeColor = (color: ColorKeys) =>
   store.dispatch.setting.SET_THEME_COLOR(color)
 
-export const setThemeMode = (mode: "dark" | "light" | "system") => {
+export const setThemeMode = (mode: ThemeMode) => {
   store.dispatch.setting.SET_THEME_MODE(mode)
 }
 

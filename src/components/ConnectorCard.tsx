@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography"
 import { Stack } from "@mui/system"
-import { useConnectorStatesWithChainIds } from "contexts/hooks/useConnector"
+import { useConnectionWithChainIds } from "contexts/hooks/useConnection"
 import React from "react"
 import { ConnectorName } from "utils/types"
 import Accounts from "./Accounts"
@@ -14,7 +14,7 @@ interface ConnectorCardProps {
 
 const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
   const { accounts, activating, isActive, chainId, error, chainName } =
-    useConnectorStatesWithChainIds(name, chainIds)
+    useConnectionWithChainIds(name, chainIds)
 
   return (
     <Stack
@@ -40,7 +40,7 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
             : "text.disabled"
         }
       />
-      <Stack width="100%" height={45} justifyContent="center">
+      <Stack width="100%" maxWidth="40vw" height={45} justifyContent="center">
         <Typography
           textTransform="uppercase"
           variant="caption"
@@ -66,7 +66,7 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
         )}
       </Stack>
       <ConnectWithSelect
-        width={300}
+        width="50vw"
         height={60}
         spacing={0.5}
         isActive={isActive}

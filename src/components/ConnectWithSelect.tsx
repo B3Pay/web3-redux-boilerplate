@@ -7,8 +7,8 @@ import {
   connectorAddChain,
   connectorDisconnect,
   connectorSwitchChain,
-} from "contexts/functions/setConnector"
-import { useConnectorStates } from "contexts/hooks/useConnector"
+} from "contexts/functions/setConnection"
+import { useConnection } from "contexts/hooks/useConnection"
 import { useMemo, useState } from "react"
 import { CHAINS } from "utils/chains"
 import { ConnectorName } from "utils/types"
@@ -35,7 +35,7 @@ const ConnectWithSelect: React.FC<ConnectWithSelectProps> = ({
   chainIds,
   ...rest
 }) => {
-  const { error, chainId } = useConnectorStates(connectorName)
+  const { error, chainId } = useConnection(connectorName)
   const [desiredChainId, setDesiredChainId] = useState(
     validateChainId(chainIds, chainId)
   )
