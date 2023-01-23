@@ -5,7 +5,7 @@ import store from "contexts/store"
 import Header from "layouts/Header"
 import type { AppProps } from "next/app"
 import { Provider } from "react-redux"
-import ThemeProvider from "Theme"
+import ThemeProvider from "theme"
 import "Theme/global.css"
 
 const CHAIN_CONFIGURATIONS: ChainList = {

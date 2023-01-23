@@ -1,9 +1,9 @@
-import { getChainNameIsActive } from "contexts/functions/getChain"
+import { getIsActiveByChainName } from "contexts/functions/getChain"
 import store from "contexts/store"
 import { setConnectModal } from "./setSetting"
 
 export function setChainNameFirst(chainName: string) {
-  const isActive = getChainNameIsActive(chainName)
+  const isActive = getIsActiveByChainName(chainName)
 
   if (!isActive) return setConnectModal(true, chainName)
 

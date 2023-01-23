@@ -1,4 +1,4 @@
-import { getIsActiveWithChainIds } from "contexts/functions/getConnector"
+import { getIsActiveByChainIds } from "contexts/functions/getConnector"
 import { RootState } from "contexts/store"
 import { useSelector } from "react-redux"
 
@@ -53,7 +53,7 @@ export function useChainActiveConnectorName(key: string) {
   const { chainIds, connectors } = useChainListItem(key)
 
   return connectors.find((connector) =>
-    getIsActiveWithChainIds(connector, chainIds)
+    getIsActiveByChainIds(connector, chainIds)
   )
 }
 

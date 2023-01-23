@@ -1,11 +1,10 @@
-import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { Stack } from "@mui/system"
 import { useConnectorStatesWithChainIds } from "contexts/hooks/useConnector"
-import Image from "next/image"
 import React from "react"
 import { ConnectorName } from "utils/types"
 import Accounts from "./Accounts"
+import ConnectorIcon from "./ConnectorIcon"
 import ConnectWithSelect from "./ConnectWithSelect"
 
 interface ConnectorCardProps {
@@ -27,14 +26,8 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Box
-        border={1}
-        height={55}
-        minWidth={55}
-        borderRadius={1}
-        justifyContent="center"
-        alignItems="center"
-        display="flex"
+      <ConnectorIcon
+        conectorName={name}
         borderColor={
           error
             ? "error.main"
@@ -46,14 +39,7 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
             ? "secondary.main"
             : "text.disabled"
         }
-      >
-        <Image
-          alt={name}
-          src={`/assets/images/wallet/${name}.svg`}
-          width={35}
-          height={35}
-        />
-      </Box>
+      />
       <Stack width="100%" height={45} justifyContent="center">
         <Typography
           textTransform="uppercase"

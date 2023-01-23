@@ -10,11 +10,9 @@ import { setConnectModal } from "contexts/functions/setSetting"
 import { useInitialized } from "contexts/hooks/useChain"
 import { useGlobalLoading } from "contexts/hooks/useLoading"
 import { useConnectModal } from "contexts/hooks/useSetting"
-import useConnector from "hooks/useConnector"
 import WalletModal from "layouts/WalletModal"
 import Image from "next/image"
 import { useState } from "react"
-import { getEllipsis } from "utils"
 import DrawerMenu from "./DrawerMenu"
 
 interface HeaderProps {}
@@ -25,7 +23,6 @@ const Header: React.FC<HeaderProps> = () => {
   const { open, tab } = useConnectModal()
 
   const globalLoading = useGlobalLoading()
-  const { signer, accounts } = useConnector()
 
   const initialized = useInitialized()
 
@@ -62,7 +59,7 @@ const Header: React.FC<HeaderProps> = () => {
                 color="inherit"
                 onClick={() => setConnectModal(true)}
               >
-                {signer && accounts ? getEllipsis(accounts[0]) : "CONNECT"}
+                CONNECT
               </Button>
             ) : (
               <Skeleton variant="rounded" width={115} height={36} />

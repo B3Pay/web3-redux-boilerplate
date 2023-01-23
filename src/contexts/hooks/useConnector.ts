@@ -1,7 +1,7 @@
 import {
   computeIsActive,
   getIsActive,
-  getIsActiveWithChainIds,
+  getIsActiveByChainIds,
 } from "contexts/functions/getConnector"
 import { ConnectorState } from "contexts/types/connector"
 import { useSelector } from "react-redux"
@@ -52,7 +52,7 @@ export function useConnectorStatesWithChainIds(
 ) {
   const states = useConnectorState(key)
 
-  const isActive = getIsActiveWithChainIds(key, chainIds)
+  const isActive = getIsActiveByChainIds(key, chainIds)
 
   return {
     ...states,

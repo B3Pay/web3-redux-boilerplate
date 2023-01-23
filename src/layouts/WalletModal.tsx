@@ -10,7 +10,7 @@ import Slide from "@mui/material/Slide"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import ChainButton from "components/ChainButton"
+import ChainTab from "components/ChainTab"
 import ConnectorCard from "components/ConnectorCard"
 import { setConnectModal } from "contexts/functions/setSetting"
 import { useChainList, useChainOrderByIndex } from "contexts/hooks/useChain"
@@ -77,7 +77,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
             bgcolor="background.default"
           >
             {chainList.map(({ chainName }) => (
-              <ChainButton
+              <ChainTab
                 key={chainName}
                 chainName={chainName}
                 selected={chainName === tab}
@@ -91,10 +91,10 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab, onClose }) => {
               ({ chainName, connectors, chainIds }) =>
                 chainName === tab &&
                 connectors.map((connector, index) => (
-                  <Box key={connector}>
+                  <Box key={connector} component="li">
                     <ConnectorCard name={connector} chainIds={chainIds} />
                     {index !== connectors.length - 1 && (
-                      <Divider sx={{ my: 1 }} component="li" variant="middle" />
+                      <Divider sx={{ my: 1 }} variant="middle" />
                     )}
                   </Box>
                 ))

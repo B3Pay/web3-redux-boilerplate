@@ -1,24 +1,9 @@
 import store from "contexts/store"
+import { ConnectorName } from "utils/types"
 import { getAllActiveChainNames } from "./getConnector"
 
 export function getDefaultConnectors() {
   return store.getState().chain.list.default.connectors
-}
-
-export function getChainDetails(chainName: string) {
-  return store.getState().chain.list[chainName]
-}
-
-export function getChainNameByChainId(chainId: number) {
-  const chainList = getChainList()
-
-  return Object.keys(chainList).find((key) =>
-    chainList[key].chainIds.includes(chainId)
-  )
-}
-
-export function getChainsInfo() {
-  return store.getState().chain
 }
 
 export function getChainOrder() {
@@ -29,38 +14,38 @@ export function getChainList() {
   return store.getState().chain.list
 }
 
-export function getChainInitialed() {
-  return store.getState().chain.initialized
+export function getChainDetails(chainName: string) {
+  return store.getState().chain.list[chainName]
 }
 
-export function getFirstChainName() {
+export function getChainNameByChainId(chainId: number) {
   const chainNames = getChainOrder()
 
-  return chainNames[0]
+  return chainNames.find((chainName) =>
+    getChainDetails(chainName).chainIds.includes(chainId)
+  )
 }
 
-export function getChainNameIsActive(chainName: string) {
+export function getChainNameByIndex(index = 0) {
+  const chainNames = getChainOrder()
+
+  return chainNames[index]
+}
+
+export function getIsActiveByChainName(chainName: string) {
   const activeChainNames = getAllActiveChainNames()
 
   return activeChainNames.includes(chainName)
 }
 
-export function getSortedChainNames(beFirst: string | undefined = undefined) {
-  const currentOrder: string[] = getChainOrder()
-  const chainNames: string[] = [...currentOrder]
-  const activeChainNames: string[] = getAllActiveChainNames()
-
-  currentOrder.forEach((chainName) => {
-    if (!activeChainNames.includes(chainName)) {
-      chainNames.splice(chainNames.indexOf(chainName), 1)
-      chainNames.push(chainName)
-    }
-  })
-
-  if (beFirst) {
-    chainNames.splice(chainNames.indexOf(beFirst), 1)
-    chainNames.unshift(beFirst)
+export function findChainName(connectorName: ConnectorName, chainId: number) {
+  if (getDefaultConnectors().includes(connectorName)) {
+    return "default"
   }
 
-  return chainNames
+  const chainName = getChainNameByChainId(chainId)
+
+  if (chainName === undefined) throw new Error("Chain not found")
+
+  return chainName
 }

@@ -1,20 +1,19 @@
 import { Chip, Stack } from "@mui/material"
 import Badge from "@mui/material/Badge"
-import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { setChainNameFirst } from "contexts/functions"
 import { useIsActiveChainName } from "hooks/useChains"
-import Image from "next/image"
+import ChainIcon from "./ChainIcon"
 
-interface ChainButtonProps {
+interface ChainTabProps {
   selected: boolean
   connected: boolean
   chainName: string
   setSelectChain: (chainName: string) => void
 }
 
-const ChainButton: React.FC<ChainButtonProps> = ({
+const ChainTab: React.FC<ChainTabProps> = ({
   selected,
   connected,
   chainName,
@@ -30,7 +29,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
         cursor: "pointer",
         position: "relative",
         width: 100,
-        height: 120,
+        height: 100,
         display: "flex",
         overflow: "hidden",
         alignItems: "center",
@@ -60,23 +59,12 @@ const ChainButton: React.FC<ChainButtonProps> = ({
           },
         }}
       >
-        <Box
-          border={1}
-          borderRadius={1}
+        <ChainIcon
+          chainName={chainName}
           borderColor={selected ? "primary.main" : "action.selected"}
           width={55}
           height={55}
-          justifyContent="center"
-          alignItems="center"
-          display="flex"
-        >
-          <Image
-            src={`/assets/images/chain/${chainName}.svg`}
-            alt={chainName}
-            width={40}
-            height={40}
-          />
-        </Box>
+        />
       </Badge>
       <Stack>
         {!connected && selected && isActive ? (
@@ -87,7 +75,7 @@ const ChainButton: React.FC<ChainButtonProps> = ({
             variant="outlined"
             onClick={() => setChainNameFirst(chainName)}
             sx={{
-              width: 80,
+              width: 60,
               height: 20,
               borderRadius: 1,
             }}
@@ -117,4 +105,4 @@ const ChainButton: React.FC<ChainButtonProps> = ({
   )
 }
 
-export default ChainButton
+export default ChainTab

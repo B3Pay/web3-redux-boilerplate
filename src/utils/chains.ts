@@ -57,6 +57,14 @@ interface ExtendedChainInformation extends BasicChainInformation {
   blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"]
 }
 
+export function getChainName(chainId: number): string {
+  return CHAINS[chainId]?.name ?? "default"
+}
+
+export function getChainNativeCurrency(chainId: number) {
+  return CHAINS[chainId]?.nativeCurrency
+}
+
 export function getAddChainParameters(
   chainId: number
 ): AddEthereumChainParameter | undefined {

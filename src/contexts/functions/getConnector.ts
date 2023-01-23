@@ -1,51 +1,46 @@
 import { Web3ReactState } from "@web3-react/types"
 import store from "contexts/store"
-import { findChainName } from "utils"
-import { CHAINS } from "utils/chains"
+import { getChainNativeCurrency } from "utils/chains"
 import { ConnectorName } from "utils/types"
+import { findChainName } from "./getChain"
 
 export function getConnectors() {
   return store.getState().connector
 }
 
-export function getConnectorKey() {
+export function getConnector(connectorName: ConnectorName) {
+  return store.getState().connector[connectorName]
+}
+
+export function getConnectorNames() {
   return Object.keys(getConnectors()) as ConnectorName[]
 }
 
-export function getConnector(key: ConnectorName) {
+export function getConnectorStates(connectorName: ConnectorName) {
   return (
-    store.getState().connector[key] ?? {
+    getConnector(connectorName) ?? {
       chainId: undefined,
       accounts: undefined,
       activating: false,
+      chainName: "default",
     }
   )
 }
 
-export function getIsActive(key: ConnectorName) {
-  const { chainId, accounts, activating } = getConnector(key)
+export function getConnectorNameByChainName(chainName: string) {
+  const connectorNames = getConnectorNames()
 
-  return computeIsActive({
-    chainId,
-    accounts,
-    activating,
-  })
-}
-
-export function getConnectorKeyByChainName(chainName: string) {
-  const connectors = getConnectors()
-
-  return getConnectorKey().find(
-    (key) => connectors[key]?.chainName === chainName
+  return connectorNames.find(
+    (connectorName) => getConnectorStates(connectorName).chainName === chainName
   )
 }
 
 export function getChainIdByChainName(chainName: string) {
-  const connector = getConnectorKeyByChainName(chainName)
+  const connector = getConnectorNameByChainName(chainName)
 
   if (!connector) return undefined
 
-  return getConnector(connector).chainId
+  return getConnectorStates(connector).chainId
 }
 
 export function getNativeCurrencyByChainName(chainName: string) {
@@ -53,17 +48,17 @@ export function getNativeCurrencyByChainName(chainName: string) {
 
   if (!chainId) return undefined
 
-  return CHAINS[chainId].nativeCurrency
+  return getChainNativeCurrency(chainId)
 }
 
 export function getAllActiveChainNames() {
-  const connectors = getConnectorKey()
+  const connectorNames = getConnectorNames()
   const activeChainNames: string[] = []
 
-  connectors.forEach((connector) => {
-    const { chainId } = getConnector(connector)
+  connectorNames.forEach((connectorName) => {
+    const { chainId } = getConnectorStates(connectorName)
     if (chainId) {
-      const chainName = findChainName(connector, chainId)
+      const chainName = findChainName(connectorName, chainId)
       if (chainName !== "default" && !activeChainNames.includes(chainName)) {
         activeChainNames.push(chainName)
       }
@@ -73,21 +68,31 @@ export function getAllActiveChainNames() {
   return activeChainNames
 }
 
-export function getIsActiveWithChainIds(
-  key: ConnectorName,
+export function getIsActiveByChainIds(
+  connectorName: ConnectorName,
   chainIds: number[]
 ) {
-  const { chainId, accounts, activating } = getConnector(key)
+  const { chainId, accounts, activating } = getConnectorStates(connectorName)
 
-  return chainIds.some((id) =>
-    chainId === id
-      ? computeIsActive({
-          chainId,
-          accounts,
-          activating,
-        })
-      : false
+  return chainIds.some(
+    (id) =>
+      chainId === id &&
+      computeIsActive({
+        chainId,
+        accounts,
+        activating,
+      })
   )
+}
+
+export function getIsActive(connectorName: ConnectorName) {
+  const { chainId, accounts, activating } = getConnectorStates(connectorName)
+
+  return computeIsActive({
+    chainId,
+    accounts,
+    activating,
+  })
 }
 
 export function computeIsActive(state?: Web3ReactState) {

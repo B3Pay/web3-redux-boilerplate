@@ -4,7 +4,7 @@ import {
   useMediaThemeMode,
   useThemeColorPalette,
 } from "contexts/hooks/useSetting"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import createMuiTheme from "./createTheme"
 
 interface ThemeProps {
@@ -17,6 +17,12 @@ const Theme: React.FC<ThemeProps> = ({ children, ...rest }) => {
   const mode = useMediaThemeMode()
 
   const theme = useMemo(() => createMuiTheme(mode, palette), [palette, mode])
+
+  useEffect(() => {
+    document
+      .querySelector("meta[name='theme-color']")
+      ?.setAttribute("content", theme.palette.primary.main)
+  }, [theme.palette.primary.main])
 
   return (
     <ThemeProvider theme={theme} {...rest}>
