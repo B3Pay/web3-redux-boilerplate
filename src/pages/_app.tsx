@@ -5,8 +5,8 @@ import store from "contexts/store"
 import Header from "layouts/Header"
 import type { AppProps } from "next/app"
 import { Provider } from "react-redux"
-import ThemeProvider from "tmp"
-import "tmp/global.css"
+import ThemeProvider from "theme"
+import "theme/global.css"
 
 const CHAIN_CONFIGURATIONS: ChainList = {
   ethereum: {
