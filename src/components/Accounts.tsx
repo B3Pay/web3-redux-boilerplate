@@ -1,18 +1,18 @@
 import { Box } from "@mui/material"
 import Typography from "@mui/material/Typography"
-import { getNativeCurrencyByChainName } from "contexts/functions"
+import { getChainNativeCurrency } from "contexts/helpers"
 import useBalances from "hooks/useBalances"
 import { formatBalance, getEllipsis } from "utils"
 
 interface AccountsProps {
-  chainName: string
+  chain: string
   accounts?: string[]
 }
 
-const Accounts: React.FC<AccountsProps> = ({ chainName, accounts }) => {
-  const balances = useBalances(chainName, accounts)
+const Accounts: React.FC<AccountsProps> = ({ chain, accounts }) => {
+  const balances = useBalances(chain, accounts)
 
-  const tokenDetail = getNativeCurrencyByChainName(chainName)
+  const tokenDetail = getChainNativeCurrency(chain)
 
   return (
     <Box>

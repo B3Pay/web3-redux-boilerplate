@@ -18,17 +18,17 @@ export function useAllAccounts() {
 
   return useMemo(
     () =>
-      connectors.reduce((acc, { chainName, accounts }) => {
-        if (accounts?.length && chainName) {
+      connectors.reduce((acc, { chain, accounts }) => {
+        if (accounts?.length && chain) {
           accounts.forEach((account) => {
             acc.push({
-              chainName,
+              chain,
               account,
             })
           })
         }
         return acc
-      }, [] as { chainName: string; account: string }[]),
+      }, [] as { chain: string; account: string }[]),
     [connectors]
   )
 }

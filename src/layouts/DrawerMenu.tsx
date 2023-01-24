@@ -1,5 +1,6 @@
 import LensIcon from "@mui/icons-material/Lens"
 import RestartAlt from "@mui/icons-material/RestartAlt"
+import { capitalize } from "@mui/material"
 import Box from "@mui/material/Box"
 import Divider from "@mui/material/Divider"
 import Drawer from "@mui/material/Drawer"
@@ -13,13 +14,13 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
-import { setThemeColor, setThemeMode } from "contexts/functions"
+import { setThemeColor, setThemeMode } from "contexts/helpers"
 import {
   getAllThemeColorsByRange,
   getAppVersion,
-} from "contexts/functions/getSetting"
+} from "contexts/helpers/getSetting"
 import { useThemeMode } from "contexts/hooks/useSetting"
-import { ColorKeys } from "contexts/types/setting"
+import { ColorKeys, ThemeMode } from "contexts/types/setting"
 import Image from "next/image"
 
 interface DrawerProps {
@@ -27,9 +28,9 @@ interface DrawerProps {
   drawerOpen: boolean
 }
 
-export const SELECTABLE_COLORS = getAllThemeColorsByRange()
+const SELECTABLE_COLORS = getAllThemeColorsByRange()
 
-const options = ["system", "light", "dark"] as const
+const SELECTABLE_MODE = ["system", "light", "dark"] as const
 
 const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
   const mode = useThemeMode()
@@ -77,13 +78,11 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
                 id="simple-select"
                 value={mode}
                 label="Theme"
-                onChange={(e) =>
-                  setThemeMode(e.target.value as typeof options[number])
-                }
+                onChange={(e) => setThemeMode(e.target.value as ThemeMode)}
               >
-                {options.map((option) => (
+                {SELECTABLE_MODE.map((option) => (
                   <MenuItem key={option} value={option}>
-                    {option}
+                    {capitalize(option)}
                   </MenuItem>
                 ))}
               </Select>

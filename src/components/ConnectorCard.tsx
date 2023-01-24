@@ -13,7 +13,7 @@ interface ConnectorCardProps {
 }
 
 const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
-  const { accounts, activating, isActive, chainId, error, chainName } =
+  const { accounts, activating, isActive, chainId, error, chain } =
     useConnectionWithChainIds(name, chainIds)
 
   return (
@@ -61,8 +61,7 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
             {error.message ? `: ${error.message}` : null}
           </Typography>
         ) : (
-          accounts &&
-          chainName && <Accounts accounts={accounts} chainName={chainName} />
+          accounts && chain && <Accounts accounts={accounts} chain={chain} />
         )}
       </Stack>
       <ConnectWithSelect

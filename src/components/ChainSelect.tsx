@@ -1,15 +1,12 @@
 import MenuItem from "@mui/material/MenuItem"
 import TextField from "@mui/material/TextField"
-import { setChainNameFirst } from "contexts/functions/setChain"
-import {
-  useChainConfigList,
-  useSelectedChainOrder,
-} from "contexts/hooks/useChain"
+import { setChainFirstOrder } from "contexts/helpers/setChain"
+import { useChainConfigList, useSelectedChain } from "contexts/hooks/useChain"
 
 interface ChainSelectProps {}
 
 const ChainSelect: React.FC<ChainSelectProps> = () => {
-  const selectedChainName = useSelectedChainOrder()
+  const selectedChainName = useSelectedChain()
   const allChains = useChainConfigList()
 
   return (
@@ -18,9 +15,9 @@ const ChainSelect: React.FC<ChainSelectProps> = () => {
       variant="outlined"
       size="small"
       value={selectedChainName}
-      onChange={(e) => setChainNameFirst(e.target.value)}
+      onChange={(e) => setChainFirstOrder(e.target.value)}
     >
-      {allChains.map(({ name, key }) => (
+      {allChains.map(({ name, chain: key }) => (
         <MenuItem key={key} value={key}>
           {name}
         </MenuItem>

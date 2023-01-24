@@ -55,7 +55,7 @@ export type Web3ReactStateWithKey = Web3ReactStateUpdate & {
 
 export type UpdateWithKeyAndChainName = Web3ReactStateUpdate & {
   key: ConnectorName
-  chainName: string | undefined
+  chain: string | undefined
 }
 
 export type Web3ReactStateWithConnector = Web3ReactStateWithKey & {
@@ -64,7 +64,7 @@ export type Web3ReactStateWithConnector = Web3ReactStateWithKey & {
 
 export interface Connection extends Web3ReactState {
   error: Web3Error | undefined
-  chainName: string | undefined
+  chain: string | undefined
 }
 
 export interface ConnectionStateWithActive extends Connection {

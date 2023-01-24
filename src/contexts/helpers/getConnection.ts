@@ -1,13 +1,13 @@
-import { Web3ReactState } from "@web3-react/types"
+import { AddEthereumChainParameter, Web3ReactState } from "@web3-react/types"
 import store from "contexts/store"
 import {
   Connection,
   ConnectionStateWithActive,
   DefaultConnectionState,
 } from "contexts/types/connection"
-import { getChainNativeCurrency } from "utils/chains"
+import { getNativeCurrencyByChainId } from "utils/chains"
 import { ConnectorName } from "utils/types"
-import { findChainName } from "./getChain"
+import { getChainByConnectorNameAndChainId } from "./getChain"
 
 export function getConnectionState(): DefaultConnectionState {
   return store.getState().connection
@@ -18,7 +18,7 @@ export function getConnectorNameList(): ConnectorName[] {
   return Object.keys(connection) as ConnectorName[]
 }
 
-export function getConnectionDetail(connectorName: ConnectorName): Connection {
+export function getConnection(connectorName: ConnectorName): Connection {
   const connection = store.getState().connection[connectorName]
 
   return (
@@ -26,16 +26,16 @@ export function getConnectionDetail(connectorName: ConnectorName): Connection {
       chainId: undefined,
       accounts: undefined,
       activating: false,
-      chainName: undefined,
+      chain: undefined,
       error: undefined,
     }
   )
 }
 
-export function getConnection(
+export function getConnectionWithIsActive(
   connectorName: ConnectorName
 ): ConnectionStateWithActive {
-  const states = getConnectionDetail(connectorName)
+  const states = getConnection(connectorName)
 
   const isActive = computeConnectionIsActive(states)
 
@@ -45,40 +45,44 @@ export function getConnection(
   }
 }
 
-export function getConnectorNameByChainName(chainName: string) {
+export function getChainActiveConnectorName(
+  chain: string
+): ConnectorName | undefined {
   const connectorNames = getConnectorNameList()
 
   return connectorNames.find(
-    (connectorName) => getConnection(connectorName).chainName === chainName
+    (connectorName) => getConnection(connectorName).chain === chain
   )
 }
 
-export function getChainIdByChainName(chainName: string) {
-  const connector = getConnectorNameByChainName(chainName)
+export function getChainChainId(chain: string): number | undefined {
+  const connector = getChainActiveConnectorName(chain)
 
   if (!connector) return undefined
 
   return getConnection(connector).chainId
 }
 
-export function getNativeCurrencyByChainName(chainName: string) {
-  const chainId = getChainIdByChainName(chainName)
+export function getChainNativeCurrency(
+  chain: string
+): AddEthereumChainParameter["nativeCurrency"] | undefined {
+  const chainId = getChainChainId(chain)
 
   if (!chainId) return undefined
 
-  return getChainNativeCurrency(chainId)
+  return getNativeCurrencyByChainId(chainId)
 }
 
-export function getAllActiveChainNames() {
+export function getActiveChainList(): string[] {
   const connectorNames = getConnectorNameList()
   const activeChainNames: string[] = []
 
   connectorNames.forEach((connectorName) => {
     const { chainId } = getConnection(connectorName)
     if (chainId) {
-      const chainName = findChainName(connectorName, chainId)
-      if (chainName !== "default" && !activeChainNames.includes(chainName)) {
-        activeChainNames.push(chainName)
+      const chain = getChainByConnectorNameAndChainId(connectorName, chainId)
+      if (chain !== "default" && !activeChainNames.includes(chain)) {
+        activeChainNames.push(chain)
       }
     }
   })
@@ -89,7 +93,7 @@ export function getAllActiveChainNames() {
 export function getConnectionIsActiveByChainIds(
   connectorName: ConnectorName,
   chainIds: number[]
-) {
+): boolean {
   const { chainId, accounts, activating } = getConnection(connectorName)
 
   return chainIds.some(
@@ -103,7 +107,7 @@ export function getConnectionIsActiveByChainIds(
   )
 }
 
-export function getConnectionIsActive(connectorName: ConnectorName) {
+export function getConnectionIsActive(connectorName: ConnectorName): boolean {
   const { chainId, accounts, activating } = getConnection(connectorName)
 
   return computeConnectionIsActive({
@@ -113,7 +117,7 @@ export function getConnectionIsActive(connectorName: ConnectorName) {
   })
 }
 
-export function computeConnectionIsActive(state?: Web3ReactState) {
+export function computeConnectionIsActive(state?: Web3ReactState): boolean {
   if (!state) return false
   return Boolean(state.chainId && state.accounts && !state.activating)
 }

@@ -14,7 +14,7 @@ import useConnector from "hooks/useConnector"
 import { useState } from "react"
 
 export default function Home() {
-  const { name } = useSelectedChainConfig()
+  const { chain: key, name } = useSelectedChainConfig()
   const { signer, accounts } = useConnector()
 
   const [to, setTo] = useState<string>("")
@@ -42,8 +42,8 @@ export default function Home() {
     <Card>
       <CardHeader
         title={name}
-        subheader={<Accounts chainName={name} accounts={accounts} />}
-        avatar={<ChainIcon chainName={name} />}
+        subheader={<Accounts chain={key} accounts={accounts} />}
+        avatar={<ChainIcon chain={key} />}
         action={accounts?.length ? <AccountSelect /> : <ChainSelect />}
       />
       <Box px={2} py={1}>

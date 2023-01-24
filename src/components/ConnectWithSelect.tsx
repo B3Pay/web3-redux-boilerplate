@@ -3,11 +3,11 @@ import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
 import Stack, { StackProps } from "@mui/material/Stack"
 import {
-  connectorActivate,
-  connectorAddChain,
-  connectorDisconnect,
-  connectorSwitchChain,
-} from "contexts/functions/setConnection"
+  setConnectionActivate,
+  setConnectionAddChain,
+  setConnectionDisconnect,
+  setConnectionSwitchChain,
+} from "contexts/helpers/setConnection"
 import { useConnection } from "contexts/hooks/useConnection"
 import { useMemo, useState } from "react"
 import { CHAINS } from "utils/chains"
@@ -43,7 +43,7 @@ const ConnectWithSelect: React.FC<ConnectWithSelectProps> = ({
   function onChange(event: any) {
     setDesiredChainId(event.target.value)
     if (error?.code || !isActive)
-      connectorSwitchChain(connectorName, event.target.value)
+      setConnectionSwitchChain(connectorName, event.target.value)
   }
 
   const buttonProps: ConnectorButtonProps = useMemo(() => {
@@ -51,34 +51,34 @@ const ConnectWithSelect: React.FC<ConnectWithSelectProps> = ({
       return {
         children: "Add Chain",
         color: "warning",
-        onClick: () => connectorAddChain(connectorName, desiredChainId),
+        onClick: () => setConnectionAddChain(connectorName, desiredChainId),
       }
     }
     if (error) {
       return {
         children: "Try Again?",
         color: "info",
-        onClick: () => connectorActivate(connectorName, desiredChainId),
+        onClick: () => setConnectionActivate(connectorName, desiredChainId),
       }
     }
     if (chainId !== undefined && chainId !== desiredChainId) {
       return {
         children: "Switch Chain",
         color: "secondary",
-        onClick: () => connectorSwitchChain(connectorName, desiredChainId),
+        onClick: () => setConnectionSwitchChain(connectorName, desiredChainId),
       }
     }
     if (isActive) {
       return {
         children: "Disconnect",
         color: "error",
-        onClick: () => connectorDisconnect(connectorName),
+        onClick: () => setConnectionDisconnect(connectorName),
       }
     }
     return {
       children: "Connect",
       color: "success",
-      onClick: () => connectorActivate(connectorName, desiredChainId),
+      onClick: () => setConnectionActivate(connectorName, desiredChainId),
     }
   }, [connectorName, desiredChainId, isActive, error, chainId])
 
@@ -98,7 +98,7 @@ const ConnectWithSelect: React.FC<ConnectWithSelectProps> = ({
             padding: 0,
             "& .MuiSelect-select": {
               padding: 0.7,
-              paddingLeft: 1,
+              paddingLeft: 2,
               fontSize: 12,
             },
           }}

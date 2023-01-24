@@ -3,10 +3,10 @@ import { useEffect, useState } from "react"
 import { useProviderByChainName } from "./useProvider"
 
 function useBalances(
-  chainName: string,
+  chain: string,
   accounts?: string[]
 ): BigNumber[] | number[] | undefined {
-  const provider = useProviderByChainName(chainName)
+  const provider = useProviderByChainName(chain)
 
   const [balances, setBalances] = useState<BigNumber[] | undefined>()
 

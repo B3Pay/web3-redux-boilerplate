@@ -23,7 +23,7 @@ export default function createMuiTheme(
       },
     },
     shape: {
-      borderRadius: 8,
+      borderRadius: 16,
     },
     components: {
       MuiButton: {

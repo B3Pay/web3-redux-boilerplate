@@ -2,14 +2,14 @@ import Box, { BoxProps } from "@mui/material/Box"
 import Image from "next/image"
 
 interface ChainIconProps extends BoxProps {
-  chainName: string
+  chain: string
   width?: number
   height?: number
   borderColor?: string
 }
 
 const ChainIcon: React.FC<ChainIconProps> = ({
-  chainName,
+  chain,
   width = 45,
   height = 45,
   ...rest
@@ -27,10 +27,10 @@ const ChainIcon: React.FC<ChainIconProps> = ({
       {...rest}
     >
       <Image
-        src={`/assets/images/chain/${chainName}.svg`}
-        alt={chainName}
-        width={width - 10}
-        height={height - 10}
+        src={`/assets/images/chain/${chain}.svg`}
+        alt={chain}
+        width={width - 15}
+        height={height - 15}
       />
     </Box>
   )

@@ -8,9 +8,10 @@ import { Provider } from "react-redux"
 import ThemeProvider from "theme"
 import "theme/global.css"
 
+// key should be the same as the public/assets/chain/{key}.svg
 const CONFIG: InitialConfig = {
   ethereum: {
-    name: "Ethereum",
+    name: "Eth",
     connectors: ["injected", "walletconnect", "coinbase"],
     chainIds: [1, 42161, 80001, 31337],
   },
@@ -30,7 +31,7 @@ const CONFIG: InitialConfig = {
     chainIds: [1000000000],
   },
   default: {
-    name: "default",
+    name: "Default",
     connectors: ["network"],
     chainIds: [1, 42, 56, 97, 100, 80001, 31337, 43114, 42220],
   },

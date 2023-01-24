@@ -8,7 +8,7 @@ import { Network } from "@web3-react/network"
 import { Url } from "@web3-react/url"
 import { WalletConnect } from "@web3-react/walletconnect"
 
-// key should be the same as the file name
+// key should be the same as the file name in src/connectors and public/assets/connector/{key}.svg
 export type Web3Connectors = {
   url: Url
   empty: Empty

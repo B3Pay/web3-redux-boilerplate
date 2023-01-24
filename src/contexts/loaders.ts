@@ -10,19 +10,7 @@ type ConnectorLoaderProps = {
 
 export function ConnectorLoader({ connectorConfig }: ConnectorLoaderProps) {
   useEffect(() => {
-    const uniqueConnectors = Object.values(connectorConfig).reduce(
-      (acc, { connectors }) => {
-        connectors.forEach((connector) => {
-          if (!acc.includes(connector)) {
-            acc.unshift(connector)
-          }
-        })
-        return acc
-      },
-      [] as ConnectorName[]
-    )
-
-    const config = Object.entries(connectorConfig).reduce(
+    const { config, uniqueConnectors } = Object.entries(connectorConfig).reduce(
       (acc, [key, value]) => {
         if (!value?.chainIds?.length) {
           throw new Error(`chainIds is empty in ${key}`)
@@ -30,21 +18,20 @@ export function ConnectorLoader({ connectorConfig }: ConnectorLoaderProps) {
         if (!value?.connectors?.length) {
           throw new Error(`connectors is empty in ${key}`)
         }
-        if (
-          value?.connectors.some(
-            (connector) => !uniqueConnectors.includes(connector)
-          )
-        ) {
-          throw new Error(`connectors is invalid in ${key}`)
-        }
 
-        acc[key] = {
-          key,
+        value.connectors.forEach((connector) => {
+          if (!acc.uniqueConnectors.includes(connector)) {
+            acc.uniqueConnectors.unshift(connector)
+          }
+        })
+
+        acc.config[key] = {
+          chain: key,
           ...value,
         }
         return acc
       },
-      {} as ChainConfig
+      { config: {} as ChainConfig, uniqueConnectors: [] as ConnectorName[] }
     )
 
     store.dispatch.chain.ADD_CONFIG(config)

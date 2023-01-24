@@ -1,7 +1,7 @@
-import { getConnectionIsActive } from "contexts/functions/getConnection"
+import { getConnectionIsActive } from "contexts/helpers/getConnection"
 import {
   useChainActiveConnectorName,
-  useSelectedChainOrder,
+  useSelectedChain,
 } from "contexts/hooks/useChain"
 import {
   useConnection,
@@ -32,7 +32,7 @@ export const useConnectorByName = (
 
 export function useActiveConnectorName() {
   const connectors = useConnectionNameList()
-  const selectedChain = useSelectedChainOrder()
+  const selectedChain = useSelectedChain()
   const connectorName = useChainActiveConnectorName(selectedChain)
 
   if (connectorName) {
@@ -42,9 +42,9 @@ export function useActiveConnectorName() {
   return connectors.find(getConnectionIsActive) as ConnectorName
 }
 
-export function useActiveConnectorNameByChainName(chainName: string) {
+export function useActiveConnectorNameByChainName(chain: string) {
   const connectors = useConnectionNameList()
-  const connectorName = useChainActiveConnectorName(chainName)
+  const connectorName = useChainActiveConnectorName(chain)
 
   if (connectorName) {
     return connectorName

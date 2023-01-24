@@ -25,5 +25,5 @@ export type ConnectionDetailFunction<T extends ConnectorName> = {
 
 export type InitialConnectionDetail = {
   name: ConnectorName
-  chainName: string
+  chain: string
 }

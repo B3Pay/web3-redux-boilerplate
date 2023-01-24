@@ -29,8 +29,8 @@ export const usePriorityProvider = (): ProviderType => {
   return useProvider(key)
 }
 
-export const useProviderByChainName = (chainName: string): ProviderType => {
-  const key = useActiveConnectorNameByChainName(chainName)
+export const useProviderByChainName = (chain: string): ProviderType => {
+  const key = useActiveConnectorNameByChainName(chain)
 
   return useProvider(key)
 }

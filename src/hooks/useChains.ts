@@ -1,8 +1,8 @@
-import { getConnectionIsActive } from "contexts/functions/getConnection"
+import { getConnectionIsActive } from "contexts/helpers/getConnection"
 import {
   useChainActiveConnectorName,
   useChainConfigList,
-  useSelectedChainOrder,
+  useSelectedChain,
 } from "contexts/hooks/useChain"
 import useConnectionState, {
   useConnection,
@@ -12,20 +12,20 @@ import { useMemo } from "react"
 import { ConnectorName } from "utils/types"
 
 export function usePriorityChain() {
-  const key = useSelectedChainOrder()
+  const chain = useSelectedChain()
 
-  const connectorName = useChainActiveConnectorName(key)
+  const connectorName = useChainActiveConnectorName(chain)
 
   return useChains(connectorName)
 }
 
-export function useActiveChainNames() {
+export function useActiveChainList() {
   const connectors = useConnectionState()
 
   return useMemo(
     () =>
       Object.keys(connectors).reduce((acc, key) => {
-        const chain = connectors[key as ConnectorName]?.chainName
+        const chain = connectors[key as ConnectorName]?.chain
         if (chain && getConnectionIsActive(key as ConnectorName)) {
           return [...acc, chain]
         }
@@ -35,13 +35,13 @@ export function useActiveChainNames() {
   )
 }
 
-export function useIsActiveChainName(chainName: string) {
-  const chainNames = useActiveChainNames()
+export function useIsActiveChain(chain: string) {
+  const chains = useActiveChainList()
 
-  return chainNames.includes(chainName)
+  return chains.includes(chain)
 }
 
-export function useActiveChainName() {
+export function useActiveChain() {
   const chainId = usePriorityChain()
   const chainList = useChainConfigList()
 

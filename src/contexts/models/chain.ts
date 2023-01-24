@@ -1,15 +1,14 @@
 import { createModel } from "@rematch/core"
-import { getAllActiveChainNames } from "contexts/functions/getConnection"
+import { getActiveChainList } from "contexts/helpers/getConnection"
 import {
   ChainConfig,
   ConfigDetail,
   DefaultChainState,
-  PartialConfigDetail,
 } from "contexts/types/chain"
 import { RootModel } from "../store"
 
 const chainDetail: ConfigDetail = {
-  key: "ethereum",
+  chain: "ethereum",
   chainIds: [1],
   name: "Ethereum",
   connectors: ["network"],
@@ -43,20 +42,6 @@ const chain = createModel<RootModel>()({
         config,
       }
     },
-    UPDATE_CONFIG: (state, payload: PartialConfigDetail) => {
-      const { key, ...rest } = payload
-
-      return {
-        ...state,
-        config: {
-          ...state.config,
-          [key]: {
-            ...state.config[key],
-            ...rest,
-          },
-        },
-      }
-    },
     UPDATE_ORDER: (state, payload: string[]) => {
       return {
         ...state,
@@ -73,22 +58,22 @@ const chain = createModel<RootModel>()({
       const { initialized, order } = state.chain
       if (!initialized) return
 
-      const chainNames: string[] = [...order]
-      const activeChainNames: string[] = getAllActiveChainNames()
+      const chainList: string[] = [...order]
+      const activeChainNames: string[] = getActiveChainList()
 
-      order.forEach((chainName) => {
-        if (!activeChainNames.includes(chainName)) {
-          chainNames.splice(chainNames.indexOf(chainName), 1)
-          chainNames.push(chainName)
+      order.forEach((chain) => {
+        if (!activeChainNames.includes(chain)) {
+          chainList.splice(chainList.indexOf(chain), 1)
+          chainList.push(chain)
         }
       })
 
       if (firstItem) {
-        chainNames.splice(chainNames.indexOf(firstItem), 1)
-        chainNames.unshift(firstItem)
+        chainList.splice(chainList.indexOf(firstItem), 1)
+        chainList.unshift(firstItem)
       }
 
-      dispatch.chain.UPDATE_ORDER(chainNames)
+      dispatch.chain.UPDATE_ORDER(chainList)
     },
   }),
 })

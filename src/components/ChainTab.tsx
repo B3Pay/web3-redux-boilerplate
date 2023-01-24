@@ -2,24 +2,26 @@ import { Chip, Stack } from "@mui/material"
 import Badge from "@mui/material/Badge"
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
-import { setChainNameFirst } from "contexts/functions"
-import { useIsActiveChainName } from "hooks/useChains"
+import { setChainFirstOrder } from "contexts/helpers"
+import { useIsActiveChain } from "hooks/useChains"
 import ChainIcon from "./ChainIcon"
 
 interface ChainTabProps {
   selected: boolean
   connected: boolean
-  chainName: string
+  chain: string
+  name: string
   onChange: () => void
 }
 
 const ChainTab: React.FC<ChainTabProps> = ({
   selected,
   connected,
-  chainName,
+  chain,
+  name,
   onChange,
 }) => {
-  const isActive = useIsActiveChainName(chainName)
+  const isActive = useIsActiveChain(chain)
 
   return (
     <Paper
@@ -52,15 +54,17 @@ const ChainTab: React.FC<ChainTabProps> = ({
         sx={{
           margin: 1,
           "& .MuiBadge-badge": {
-            fontSize: 10,
+            top: 5,
+            right: 5,
             width: 16,
             height: 16,
+            fontSize: 10,
             minWidth: 16,
           },
         }}
       >
         <ChainIcon
-          chainName={chainName}
+          chain={chain}
           borderColor={selected ? "primary.main" : "action.selected"}
           width={55}
           height={55}
@@ -73,11 +77,12 @@ const ChainTab: React.FC<ChainTabProps> = ({
             label="Switch"
             color="warning"
             variant="outlined"
-            onClick={() => setChainNameFirst(chainName)}
+            onClick={() => setChainFirstOrder(chain)}
             sx={{
               width: 60,
               height: 20,
               borderRadius: 1,
+              fontSize: 10,
             }}
           />
         ) : (
@@ -97,7 +102,7 @@ const ChainTab: React.FC<ChainTabProps> = ({
               paddingRight: 1,
             }}
           >
-            {chainName}
+            {name}
           </Typography>
         )}
       </Stack>

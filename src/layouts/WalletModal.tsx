@@ -12,11 +12,11 @@ import Typography from "@mui/material/Typography"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import ChainTab from "components/ChainTab"
 import ConnectorCard from "components/ConnectorCard"
-import { setConnectModal } from "contexts/functions/setSetting"
+import { setConnectModal } from "contexts/helpers/setSetting"
 import {
   useChainConfigList,
-  useChainOrderList,
-  useSelectedChainOrder,
+  useChainList,
+  useSelectedChain,
 } from "contexts/hooks/useChain"
 
 interface WalletModalProps {
@@ -28,9 +28,9 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
   const matches = useMediaQuery("(min-width:600px)")
 
   const chainConfigList = useChainConfigList()
-  const chainOrderList = useChainOrderList()
+  const chainList = useChainList()
 
-  const selectedChain = useSelectedChainOrder()
+  const selectedChain = useSelectedChain()
 
   return (
     <Modal
@@ -81,19 +81,20 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
             justifyContent="space-between"
             bgcolor="background.default"
           >
-            {chainOrderList.map((chainName) => (
+            {chainConfigList.map(({ chain, name }) => (
               <ChainTab
-                key={chainName}
-                chainName={chainName}
-                selected={chainName === tab}
-                connected={selectedChain === chainName}
-                onChange={() => setConnectModal(true, chainName)}
+                key={chain}
+                name={name}
+                chain={chain}
+                selected={chain === tab}
+                connected={selectedChain === chain}
+                onChange={() => setConnectModal(true, chain)}
               />
             ))}
           </Stack>
           <List>
             {chainConfigList.map(
-              ({ key, connectors, chainIds }) =>
+              ({ chain: key, connectors, chainIds }) =>
                 key === tab &&
                 connectors.map((connector, index) => (
                   <Box key={connector} component="li">

@@ -2,7 +2,7 @@ import {
   computeConnectionIsActive,
   getConnectionIsActive,
   getConnectionIsActiveByChainIds,
-} from "contexts/functions/getConnection"
+} from "contexts/helpers/getConnection"
 import {
   Connection,
   ConnectionStateWithActive,
@@ -35,7 +35,7 @@ export function useConnectionDetail(connectorName: ConnectorName): Connection {
       chainId: undefined,
       accounts: undefined,
       activating: false,
-      chainName: undefined,
+      chain: undefined,
       error: undefined,
     }
   )
@@ -70,7 +70,7 @@ export function useConnectionWithChainIds(
 
 export function useConnectionByChainName(name: string): Connection | undefined {
   const connectionList = useConnectionStateList()
-  return connectionList.find(({ chainName }) => chainName === name)
+  return connectionList.find(({ chain }) => chain === name)
 }
 
 export function useConnectionNameByChainName(
@@ -80,7 +80,7 @@ export function useConnectionNameByChainName(
 
   return Object.keys(connection).find(
     (connectorName) =>
-      connection[connectorName as ConnectorName]?.chainName === name
+      connection[connectorName as ConnectorName]?.chain === name
   ) as ConnectorName
 }
 

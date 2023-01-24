@@ -1,4 +1,4 @@
-import { getChainNameByIndex } from "contexts/functions/getChain"
+import { getSelectedChain } from "contexts/helpers/getChain"
 import { ColorKeys, ThemeMode } from "contexts/types/setting"
 import store from "../store"
 import { SnackBarType } from "../types/setting"
@@ -24,6 +24,6 @@ export const setSnackbar = (props: SnackBarType) =>
   store.dispatch.setting.setSnackBar(props)
 
 export function setConnectModal(open: boolean, selectedTab?: string) {
-  const tab = selectedTab ?? getChainNameByIndex()
+  const tab = selectedTab ?? getSelectedChain()
   store.dispatch.setting.SET_CONNECT_MODAL({ open, tab })
 }

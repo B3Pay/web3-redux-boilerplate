@@ -2,7 +2,7 @@ import { createModel } from "@rematch/core"
 import { Network } from "@web3-react/network"
 import { Actions, Web3ReactStateUpdate } from "@web3-react/types"
 import { WalletConnect } from "@web3-react/walletconnect"
-import { findChainName } from "contexts/functions/getChain"
+import { getChainByConnectorNameAndChainId } from "contexts/helpers/getChain"
 import { getAddChainParameters } from "utils/chains"
 import { ConnectorName } from "utils/types"
 import { isValidChainId, validateAccount } from "utils/validators"
@@ -26,7 +26,7 @@ export const connectionDefaultState: Connection = {
   chainId: undefined,
   accounts: undefined,
   activating: false,
-  chainName: undefined,
+  chain: undefined,
   error: undefined,
 }
 
@@ -68,7 +68,7 @@ const connection = createModel<RootModel>()({
       // determine the next chainId and accounts
       const chainId = payload.chainId ?? state[key]?.chainId
       const accounts = payload.accounts ?? state[key]?.accounts
-      const chainName = payload.chainName ?? state[key]?.chainName
+      const chain = payload.chain ?? state[key]?.chain
       // ensure that the activating flag is cleared when appropriate
       let activating = state[key]?.activating
       if (activating && chainId && accounts) activating = false
@@ -80,7 +80,7 @@ const connection = createModel<RootModel>()({
           chainId,
           accounts,
           activating,
-          chainName,
+          chain,
         },
       }
     },
@@ -215,7 +215,7 @@ const connection = createModel<RootModel>()({
       update: (payload: Web3ReactStateUpdate) => {
         const updateState: UpdateWithKeyAndChainName = {
           key,
-          chainName: undefined,
+          chain: undefined,
           ...payload,
         }
 
@@ -228,13 +228,16 @@ const connection = createModel<RootModel>()({
         // validate chainId statically, independent of existing state
         if (payload.chainId !== undefined && isValidChainId(payload.chainId)) {
           updateState.chainId = payload.chainId
-          updateState.chainName = findChainName(key, payload.chainId)
+          updateState.chain = getChainByConnectorNameAndChainId(
+            key,
+            payload.chainId
+          )
         }
 
         nullifier[key]++
         dispatch.connection.UPDATE_CONNECTION({ ...updateState, key })
 
-        dispatch.chain.sortChainOrder(updateState.chainName)
+        dispatch.chain.sortChainOrder(updateState.chain)
       },
       resetState: () => {
         nullifier[key]++

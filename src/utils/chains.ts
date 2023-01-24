@@ -61,7 +61,9 @@ export function getChainNameFromList(chainId: number): string {
   return CHAINS[chainId]?.name ?? "default"
 }
 
-export function getChainNativeCurrency(chainId: number) {
+export function getNativeCurrencyByChainId(
+  chainId: number
+): AddEthereumChainParameter["nativeCurrency"] | undefined {
   return CHAINS[chainId]?.nativeCurrency
 }
 
@@ -101,7 +103,6 @@ export const CHAINS: {
     nativeCurrency: ETH,
     blockExplorerUrls: ["https://goerli.etherscan.io"],
   },
-
   42: {
     urls: [infuraKey ? `https://kovan.infura.io/v3/${infuraKey}` : ""].filter(
       (url) => url !== ""
