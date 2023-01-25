@@ -16,6 +16,7 @@ const ConnectorLoading: React.FC<ConnectorLoadingProps> = ({ children }) => {
         {!init ? (
           <Skeleton
             width="100%"
+            variant="rounded"
             height={300}
             sx={{
               transform: "none",

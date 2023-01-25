@@ -13,6 +13,11 @@ export function useEffectsLoading(item: keyof RootState["loading"]["effects"]) {
   return useLoading().effects[item]
 }
 
+export function useWeb3Loading() {
+  const { connection, chain } = useLoading().models
+  return connection || chain
+}
+
 function useLoading() {
   return useSelector((state: RootState) => state.loading)
 }

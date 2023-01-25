@@ -3,12 +3,10 @@ import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
-import LinearProgress from "@mui/material/LinearProgress"
 import Skeleton from "@mui/material/Skeleton"
 import Toolbar from "@mui/material/Toolbar"
 import { setConnectModal } from "contexts/helpers/setSetting"
 import { useIsInitialized } from "contexts/hooks/useChain"
-import { useGlobalLoading } from "contexts/hooks/useLoading"
 import { useConnectModal } from "contexts/hooks/useSetting"
 import WalletModal from "layouts/WalletModal"
 import Image from "next/image"
@@ -21,8 +19,6 @@ const Header: React.FC<HeaderProps> = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const { open, tab } = useConnectModal()
-
-  const globalLoading = useGlobalLoading()
 
   const initialized = useIsInitialized()
 
@@ -68,7 +64,6 @@ const Header: React.FC<HeaderProps> = () => {
         </Box>
       </Toolbar>
       {initialized && <WalletModal open={open} tab={tab} />}
-      {globalLoading && <LinearProgress />}
       <DrawerMenu toggleDrawer={setDrawerOpen} drawerOpen={drawerOpen} />
     </AppBar>
   )

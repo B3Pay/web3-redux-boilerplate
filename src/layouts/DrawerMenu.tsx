@@ -1,9 +1,7 @@
 import LensIcon from "@mui/icons-material/Lens"
 import RestartAlt from "@mui/icons-material/RestartAlt"
-import { capitalize } from "@mui/material"
 import Box from "@mui/material/Box"
 import Divider from "@mui/material/Divider"
-import Drawer from "@mui/material/Drawer"
 import FormControl from "@mui/material/FormControl"
 import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
@@ -14,13 +12,17 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
+import Stack from "@mui/material/Stack"
+import SwipeableDrawer from "@mui/material/SwipeableDrawer"
+import Typography from "@mui/material/Typography"
 import { setThemeColor, setThemeMode } from "contexts/helpers"
 import {
   getAllThemeColorsByRange,
   getAppVersion,
 } from "contexts/helpers/getSetting"
 import { useThemeMode } from "contexts/hooks/useSetting"
-import { ColorKeys, ThemeMode } from "contexts/types/setting"
+import { ThemeMode } from "contexts/types/setting"
+import capitalize from "lodash/capitalize"
 import Image from "next/image"
 
 interface DrawerProps {
@@ -35,13 +37,12 @@ const SELECTABLE_MODE = ["system", "light", "dark"] as const
 const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
   const mode = useThemeMode()
 
-  const handleColorChange = (color: ColorKeys) => {
-    setThemeColor(color)
-    localStorage.setItem("color", color)
-  }
-
   return (
-    <Drawer open={drawerOpen} onClose={() => toggleDrawer(false)}>
+    <SwipeableDrawer
+      open={drawerOpen}
+      onClose={() => toggleDrawer(false)}
+      onOpen={() => toggleDrawer(true)}
+    >
       <Box
         sx={{ width: 250, height: "100%", p: 0 }}
         display="flex"
@@ -49,26 +50,25 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
         flexDirection="column"
         role="presentation"
       >
-        <List>
-          <ListItem>
-            <ListItemIcon>
-              <Image
-                src="/assets/images/logo-long.svg"
-                height={50}
-                width={100}
-                alt="logo"
-              />
-            </ListItemIcon>
-            <ListItemText
-              secondary={getAppVersion()}
-              sx={{
-                textAlign: "end",
-              }}
-              inset
-            />
-          </ListItem>
-          <Divider />
-        </List>
+        <Stack
+          py={1}
+          px={2}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          borderBottom={1}
+          borderColor="divider"
+        >
+          <Image
+            src="/assets/images/logo-long.svg"
+            height={50}
+            width={100}
+            alt="logo"
+          />
+          <Typography variant="caption" color="text.secondary">
+            v{getAppVersion()}
+          </Typography>
+        </Stack>
         <List onClick={() => toggleDrawer(false)}>
           <ListItem>
             <FormControl fullWidth>
@@ -101,7 +101,7 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
               {SELECTABLE_COLORS.map(({ name, color }) => (
                 <IconButton
                   key={name}
-                  onClick={() => handleColorChange(name)}
+                  onClick={() => setThemeColor(name)}
                   size="small"
                   sx={{
                     border: "1px dashed",
@@ -133,7 +133,7 @@ const DrawerMenu: React.FC<DrawerProps> = ({ toggleDrawer, drawerOpen }) => {
           </ListItem>
         </List>
       </Box>
-    </Drawer>
+    </SwipeableDrawer>
   )
 }
 

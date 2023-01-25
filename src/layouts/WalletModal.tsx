@@ -4,6 +4,7 @@ import Card from "@mui/material/Card"
 import Divider from "@mui/material/Divider"
 import Fade from "@mui/material/Fade"
 import IconButton from "@mui/material/IconButton"
+import LinearProgress from "@mui/material/LinearProgress"
 import List from "@mui/material/List"
 import Modal from "@mui/material/Modal"
 import Slide from "@mui/material/Slide"
@@ -13,11 +14,8 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import ChainTab from "components/ChainTab"
 import ConnectorCard from "components/ConnectorCard"
 import { setConnectModal } from "contexts/helpers/setSetting"
-import {
-  useChainConfigList,
-  useChainList,
-  useSelectedChain,
-} from "contexts/hooks/useChain"
+import { useChainConfigList, useSelectedChain } from "contexts/hooks/useChain"
+import { useWeb3Loading } from "contexts/hooks/useLoading"
 
 interface WalletModalProps {
   open: boolean
@@ -28,7 +26,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
   const matches = useMediaQuery("(min-width:600px)")
 
   const chainConfigList = useChainConfigList()
-  const chainList = useChainList()
+  const connectionLoading = useWeb3Loading()
 
   const selectedChain = useSelectedChain()
 
@@ -73,6 +71,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
               <CloseIcon />
             </IconButton>
           </Stack>
+          {connectionLoading && <LinearProgress />}
+
           <Divider flexItem />
           <Stack
             width="100%"
@@ -94,8 +94,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
           </Stack>
           <List>
             {chainConfigList.map(
-              ({ chain: key, connectors, chainIds }) =>
-                key === tab &&
+              ({ chain, connectors, chainIds }) =>
+                chain === tab &&
                 connectors.map((connector, index) => (
                   <Box key={connector} component="li">
                     <ConnectorCard name={connector} chainIds={chainIds} />

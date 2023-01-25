@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
-import CardHeader from "@mui/material/CardHeader"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
@@ -14,7 +13,7 @@ import useConnector from "hooks/useConnector"
 import { useState } from "react"
 
 export default function Home() {
-  const { chain: key, name } = useSelectedChainConfig()
+  const { chain, name } = useSelectedChainConfig()
   const { signer, accounts } = useConnector()
 
   const [to, setTo] = useState<string>("")
@@ -40,12 +39,27 @@ export default function Home() {
 
   return (
     <Card>
-      <CardHeader
-        title={name}
-        subheader={<Accounts chain={key} accounts={accounts} />}
-        avatar={<ChainIcon chain={key} />}
-        action={accounts?.length ? <AccountSelect /> : <ChainSelect />}
-      />
+      <Stack
+        p={2}
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Stack direction="row" spacing={1}>
+          <ChainIcon chain={chain} />
+          <Stack justifyContent="center">
+            <Typography
+              textTransform="uppercase"
+              variant="caption"
+              fontWeight="500"
+            >
+              {name}
+            </Typography>
+            <Accounts accounts={accounts} chain={chain} />
+          </Stack>
+        </Stack>
+        <Box>{accounts?.length ? <AccountSelect /> : <ChainSelect />}</Box>
+      </Stack>
       <Box px={2} py={1}>
         {accounts && accounts.length > 0 ? (
           <Stack

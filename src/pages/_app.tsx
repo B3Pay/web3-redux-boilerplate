@@ -11,7 +11,7 @@ import "theme/global.css"
 // key should be the same as the public/assets/chain/{key}.svg
 const CONFIG: InitialConfig = {
   ethereum: {
-    name: "Eth",
+    name: "Ethereum",
     connectors: ["injected", "walletconnect", "coinbase"],
     chainIds: [1, 42161, 80001, 31337],
   },

@@ -1,5 +1,5 @@
+import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
-import { Stack } from "@mui/system"
 import { useConnectionWithChainIds } from "contexts/hooks/useConnection"
 import React from "react"
 import { ConnectorName } from "utils/types"
@@ -17,34 +17,34 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
     useConnectionWithChainIds(name, chainIds)
 
   return (
-    <Stack
+    <Grid
       px={2}
-      py={1}
-      spacing={1}
-      height={60}
-      direction="row"
+      container
+      height={80}
       alignItems="center"
       justifyContent="space-between"
     >
-      <ConnectorIcon
-        conectorName={name}
-        borderColor={
-          error
-            ? "error.main"
-            : isActive
-            ? "success.main"
-            : activating
-            ? "warning.main"
-            : chainId
-            ? "secondary.main"
-            : "text.disabled"
-        }
-      />
-      <Stack width="100%" maxWidth="40vw" height={45} justifyContent="center">
+      <Grid item xs={2}>
+        <ConnectorIcon
+          conectorName={name}
+          borderColor={
+            error
+              ? "error.main"
+              : isActive
+              ? "success.main"
+              : activating
+              ? "warning.main"
+              : chainId
+              ? "secondary.main"
+              : "text.disabled"
+          }
+        />
+      </Grid>
+      <Grid item xs={6} display="flex" flexDirection="column" pl={0.5}>
         <Typography
           textTransform="uppercase"
           variant="caption"
-          fontWeight="500"
+          fontWeight="600"
         >
           {name}
         </Typography>
@@ -52,9 +52,10 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
           <Typography
             component="span"
             variant="caption"
-            overflow="hidden"
-            whiteSpace="nowrap"
             color="text.secondary"
+            overflow="hidden"
+            maxHeight={40}
+            justifyContent="center"
             textOverflow="ellipsis"
           >
             {error.name ?? "Error"}
@@ -63,18 +64,18 @@ const ConnectorCard: React.FC<ConnectorCardProps> = ({ name, chainIds }) => {
         ) : (
           accounts && chain && <Accounts accounts={accounts} chain={chain} />
         )}
-      </Stack>
-      <ConnectWithSelect
-        width="50vw"
-        height={60}
-        spacing={0.5}
-        isActive={isActive}
-        chainIds={chainIds}
-        connectorName={name}
-        isActivating={activating}
-        needSelection={chainIds.length > 1}
-      />
-    </Stack>
+      </Grid>
+      <Grid item xs={4} justifyContent="flex-end">
+        <ConnectWithSelect
+          spacing={0.5}
+          isActive={isActive}
+          chainIds={chainIds}
+          connectorName={name}
+          isActivating={activating}
+          needSelection={chainIds.length > 1}
+        />
+      </Grid>
+    </Grid>
   )
 }
 
