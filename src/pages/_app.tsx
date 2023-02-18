@@ -18,7 +18,7 @@ const CONFIG: InitialConfig = {
   binance: {
     name: "Binance",
     connectors: ["injected", "walletconnect", "coinbase"],
-    chainIds: [56],
+    chainIds: [56, 97],
   },
   avalanche: {
     name: "Avalanche",

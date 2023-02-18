@@ -25,10 +25,9 @@ interface WalletModalProps {
 const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
   const matches = useMediaQuery("(min-width:600px)")
 
-  const chainConfigList = useChainConfigList()
-  const connectionLoading = useWeb3Loading()
-
+  const web3Loading = useWeb3Loading()
   const selectedChain = useSelectedChain()
+  const chainConfigList = useChainConfigList()
 
   return (
     <Modal
@@ -71,8 +70,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ open, tab }) => {
               <CloseIcon />
             </IconButton>
           </Stack>
-          {connectionLoading && <LinearProgress />}
-
+          {web3Loading && <LinearProgress />}
           <Divider flexItem />
           <Stack
             width="100%"

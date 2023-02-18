@@ -1,6 +1,6 @@
+import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 import Skeleton from "@mui/material/Skeleton"
-import { Box } from "@mui/system"
 import { useIsInitialized } from "contexts/hooks/useChain"
 
 interface ConnectorLoadingProps {
